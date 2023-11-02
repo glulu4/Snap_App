@@ -5,8 +5,6 @@
 
 Snap is a cutting-edge productivity application designed to streamline your tasks and events, optimizing your time and efficiency. With Snap, you can seamlessly add/view tasks, track task progress with reinforced learning, auto-generate agendas, and get a comprehensive view of your events. Boost your productivity with Snap's intuitive design and powerful features!
 
-
-
 ## Key Features
 
 - Add/View Tasks: Quickly add new tasks or view your existing ones.
@@ -17,12 +15,6 @@ Snap is a cutting-edge productivity application designed to streamline your task
 ## App Structure
 
 Snap follows the MVVM (Model-View-ViewModel) architecture pattern, ensuring that UI logic is decoupled from the business logic, leading to a scalable and maintainable codebase.
-
-# Snap: The Productivity App 
-
-Snap is a cutting-edge productivity application designed to streamline your tasks and events, optimizing your time and efficiency. With Snap, you can seamlessly add/view tasks, track task progress with reinforced learning, auto-generate agendas, and get a comprehensive view of your events. Boost your productivity with Snap's intuitive design and powerful features!
-
-
 
 ## Authors
 
