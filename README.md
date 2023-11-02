@@ -20,9 +20,12 @@ Snap follows the MVVM (Model-View-ViewModel) architecture pattern, ensuring that
 
 - Gabby Lulu [@glulu4](https://github.com/glulu4)
 - Hannah Harhai [@hannahharhai](https://github.com/hannahharhai)
-- Maya Iwabuchi [@mayajoyiwabuchi](https://github.com/mayajoyiwabuchi) 
+- Maya Iwabuchi [@mayajoyiwabuchi](https://github.com/mayajoyiwabuchi)
 
 
+<p align="center">
+<img src='https://cdn.discordapp.com/attachments/1070990646548123651/1169746201059545188/tileLogo.png?ex=6556860b&is=6544110b&hm=9c65438bf082313bda2ba9592f0e6731951fe75c348029ef5319740d5b3d5ee6&'  width='300'>
+</p>
 
 
 
