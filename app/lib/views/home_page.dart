@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'task_list.dart'; // task list page
 import 'calendar.dart'; // calendar page
+import '../Home.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -29,6 +30,15 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Calendar()),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: Text('Go to real home page'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
             ),
