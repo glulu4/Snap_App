@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'views/home_page.dart'; // import the home page
 import 'views/task_list.dart'; // import task list page
