@@ -10,20 +10,20 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-
-          child: Row( 
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TaskList(), 
-              Text("Soon to be calendar"),
+              Expanded(
+                child:
+                    TaskList(), // Wrap TaskList with Expanded to give it a constrained width
+              ),
+              Expanded(
+                child: Text(
+                    "Soon to be calendar"), // Wrap Text with Expanded as well if you want it to take up remaining space evenly
+              ),
             ],
-
-
-          )
-
-        )
-        
-        
+          ),
+        ),
       ),
     );
   }

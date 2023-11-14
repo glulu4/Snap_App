@@ -5,15 +5,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'task_list.dart'; // task list page
 import 'calendar.dart'; // calendar page
 import '../Home.dart';
+import 'app_bar.dart';
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
+      appBar: MyAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
