@@ -18,4 +18,8 @@ class TaskViewModel {
     return this.task.category;
   }
 
+  bool get isCompleted {
+    return this.task.isCompleted;
+  }
+
 }

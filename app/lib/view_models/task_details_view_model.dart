@@ -31,4 +31,8 @@ class TaskDetailsViewModel {
     return this.taskDetails.category;
   }
 
+  bool get isCompleted {
+    return this.taskDetails.isCompleted;
+  }
+
 }
