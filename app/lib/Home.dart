@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './views/task_list.dart';
+import 'package:app/widgets/task_list.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

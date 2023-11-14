@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'task_list.dart'; // task list page
+import '../widgets/task_list.dart'; // task list page
 import 'calendar.dart'; // calendar page
 import '../Home.dart';
 import 'app_bar.dart';
+import 'add_task_view.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -55,6 +56,15 @@ class HomePage extends StatelessWidget {
                             'hi'
                         ),
                     ),
+                );
+              },
+            ),
+              ElevatedButton(
+              child: const Text('Go to add task Page'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddTaskView()),
                 );
               },
             ),

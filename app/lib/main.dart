@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'views/home_page.dart'; // import the home page
-import 'views/task_list.dart'; // import task list page
+import 'widgets/task_list.dart'; // import task list page
 import 'views/calendar.dart'; // import calendar page
 
 void main() {
