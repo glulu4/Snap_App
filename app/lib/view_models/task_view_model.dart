@@ -7,11 +7,11 @@ class TaskViewModel {
   TaskViewModel({required this.task});
 
   String get title {
-    return this.task.title;
+    return task.title;
   }
 
-  DateTime get dueDate {
-    return this.task.dueDate;
+  String get poster {
+    return task.posterUrl;
   }
 
   String get category {
