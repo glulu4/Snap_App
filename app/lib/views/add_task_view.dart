@@ -17,7 +17,7 @@ class AddTaskView extends StatelessWidget{
              child: TaskList()
           ),
           Expanded(
-            child: EventInput()
+            child: TaskInput()
           )  
         ],
       ),
@@ -26,12 +26,18 @@ class AddTaskView extends StatelessWidget{
   }
 } 
 
-class EventInput extends StatefulWidget {
+class TaskInput extends StatefulWidget {
   @override
-  _EventInputState createState() => _EventInputState();
+  _TaskInputState createState() => _TaskInputState();
 }
 
-class _EventInputState extends State<EventInput> {
+class _TaskInputState extends State<TaskInput> {
+
+  int? priority;
+  int? effort;
+
+  final List<int> options = [1, 2, 3];
+
   final _formKey = GlobalKey<FormState>();
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
@@ -70,7 +76,7 @@ class _EventInputState extends State<EventInput> {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Text(
-            'Add an Event:',
+            'Add a Task:',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -85,48 +91,109 @@ class _EventInputState extends State<EventInput> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Column(
                 children: [
+
                   TextFormField(
                     controller: _controller1,
                     decoration: const InputDecoration(
-                      labelText: 'Event Title',
+                      labelText: 'Task Name',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a title';
+                        return 'Please enter a name';
                       }
                       return null;
                     },
                   ),
+
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _controller2,
                     decoration: const InputDecoration(
-                      labelText: 'Event Details',
+                      labelText: 'Due Date',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter details';
+                        return 'Due Date';
                       }
                       return null;
                     },
                   ),
+
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _controller3,
                     decoration: const InputDecoration(
-                      labelText: 'Event Location',
+                      labelText: 'Category',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a location';
+                        return 'Please enter a Category';
                       }
                       return null;
                     },
                   ),
-                  // Add more TextFormField widgets if you have more fields
+
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<int>(
+                    decoration: const InputDecoration(
+                      labelText: 'Select a priority',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: priority,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        priority = newValue;
+                      });
+                    },
+                    validator: (int? value) {
+                      if (value == null) {
+                        return 'Select a priority';
+                      }
+                      return null;
+                    },
+                    items: options.map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                  ),
+
+
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<int>(
+                    decoration: const InputDecoration(
+                      labelText: 'Select an effort',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: effort,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        effort = newValue;
+                      });
+                    },
+                    validator: (int? value) {
+                      if (value == null) {
+                        return 'Select an effort';
+                      }
+                      return null;
+                    },
+                    items: options.map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                  ),
+
+
+
+
+
+
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -136,8 +203,33 @@ class _EventInputState extends State<EventInput> {
                           EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     ),
                     onPressed: _submitForm,
-                    child: const Text('Add Event'),
+                    child: const Text('Add Task'),
                   ),
+
+
+                  // DropdownButtonFormField<int>(
+                  //   value: priority,
+                  //   hint: Text('Select a number'),
+                  //   onChanged: (int? newValue) {
+                  //     setState(() {
+                  //       priority = newValue;
+                  //     });
+                  //   },
+                  //   validator: (int? value) {
+                  //     if (value == null) {
+                  //       return 'Please select a number';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   items: options.map<DropdownMenuItem<int>>((int value) {
+                  //     return DropdownMenuItem<int>(
+                  //       value: value,
+                  //       child: Text(value.toString()),
+                  //     );
+                  //   }).toList(),
+                  // ),
+
+
                 ],
               ),
             ),

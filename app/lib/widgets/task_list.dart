@@ -1,6 +1,5 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
+import 'package:app/views/add_task_view.dart';
 
 class TaskList extends StatefulWidget {
   @override
@@ -8,13 +7,9 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  bool isChecked = false;
-
-  // List<TaskViewModel> tasks;
   List<bool> taskValues = [false, false]; // Example list of task values
 
-
-  DropdownButton<String> myDropDown = DropdownButton<String> (
+  DropdownButton<String> myDropDown = DropdownButton<String>(
     value: 'Option 1',
     onChanged: (String? newValue) {
       // Handle dropdown value change
@@ -23,7 +18,7 @@ class _TaskListState extends State<TaskList> {
       'Option 1',
       'Option 2',
       'Option 3',
-      'Option 4'
+      'Option 4',
     ].map<DropdownMenuItem<String>>((String value) {
       return DropdownMenuItem<String>(
         value: value,
@@ -35,90 +30,100 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('TaskList Page'),
-      // ),
       body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            // border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0, 2),
-                blurRadius: 6,
-              ),
-            ],
-          ),
-          width: 300,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-                child: AppBar(
-                  backgroundColor: Colors.blue[100],
-                  title: Text('List widget'),
-                  automaticallyImplyLeading:false,
-
-                ),
-              ),
-              
-              ButtonBar(
-                
-
-                alignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // myDropDown,
-                  
-                    Tooltip(
-                      message: 'This is a tooltip',
-                      child: IconButton(
-                      color: Colors.blueGrey[300],
-                      hoverColor: Colors.blueGrey[700],
-                      icon: Icon(Icons.filter_alt),
-                      onPressed: () {
-                        //
-                      },
-                    ),
-                    ),
-
-                    IconButton(
-                      icon: Icon(Icons.sort),
-                      onPressed:() {
-                      //
-                    },
-                    color: Colors.blueGrey[300],
-                    hoverColor: Colors.blueGrey[700],
-                    ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 2),
+                    blurRadius: 6,
+                  ),
                 ],
               ),
-                ListView.builder(
-                shrinkWrap: true,
-                itemCount: taskValues.length,
-                itemBuilder: (context, index) {
-                  return CheckboxListTile(
-                    title: Text('Task ${index + 1}'),
-                    value: taskValues[index],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        taskValues[index] = value ?? false;
-                      });
+              width: 300,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    child: AppBar(
+                      backgroundColor: Colors.blue[100],
+                      title: Text('List widget'),
+                      automaticallyImplyLeading: false,
+                    ),
+                  ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Tooltip(
+                        message: 'This is a tooltip',
+                        child: IconButton(
+                          color: Colors.blueGrey[300],
+                          hoverColor: Colors.blueGrey[700],
+                          icon: Icon(Icons.filter_alt),
+                          onPressed: () {
+                            // Action to be performed when filter button is pressed
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.sort),
+                        onPressed: () {
+                          // Action to be performed when sort button is pressed
+                        },
+                        color: Colors.blueGrey[300],
+                        hoverColor: Colors.blueGrey[700],
+                      ),
+                    ],
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: taskValues.length,
+                    itemBuilder: (context, index) {
+                      return CheckboxListTile(
+                        title: Text('Task ${index + 1}'),
+                        value: taskValues[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            taskValues[index] = value ?? false;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      );
                     },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  );
-                },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddTaskView()),
+                    );
+                    // Action to be performed when the plus button is pressed
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-  
