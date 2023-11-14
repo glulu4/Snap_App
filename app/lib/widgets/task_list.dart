@@ -10,6 +10,9 @@ class TaskList extends StatefulWidget {
 class _TaskListState extends State<TaskList> {
   bool isChecked = false;
 
+  // List<TaskViewModel> tasks;
+  List<bool> taskValues = [false, false]; // Example list of task values
+
 
   DropdownButton<String> myDropDown = DropdownButton<String> (
     value: 'Option 1',
@@ -39,7 +42,7 @@ class _TaskListState extends State<TaskList> {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.grey[200],
-            border: Border.all(color: Colors.black),
+            // border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -95,35 +98,22 @@ class _TaskListState extends State<TaskList> {
                     ),
                 ],
               ),
-              
-              ListView(
+                ListView.builder(
                 shrinkWrap: true,
-                children: [
-                    CheckboxListTile(
-                    title: Text('Task 1'),
-                    value: isChecked,
+                itemCount: taskValues.length,
+                itemBuilder: (context, index) {
+                  return CheckboxListTile(
+                    title: Text('Task ${index + 1}'),
+                    value: taskValues[index],
                     onChanged: (bool? value) {
                       setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity
-                        .leading, // Places checkbox to the left
-                  ),
-                  CheckboxListTile(
-                    title: Text('Task 2'),
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
+                        taskValues[index] = value ?? false;
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
-                  ),
-
-                ],
-              )
-
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -131,3 +121,4 @@ class _TaskListState extends State<TaskList> {
     );
   }
 }
+  
