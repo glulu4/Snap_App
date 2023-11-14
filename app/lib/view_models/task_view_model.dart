@@ -1,15 +1,21 @@
-import 'package:app/models/task_model.dart';
+import 'package:app/models/task.dart';
 
-class MovieViewModel {
+class TaskViewModel {
+
   final Task task;
 
-  MovieViewModel({required this.movie});
+  TaskViewModel({required this.task});
 
   String get title {
-    return movie.title;
+    return this.task.title;
   }
 
-  String get poster {
-    return movie.posterUrl;
+  DateTime get dueDate {
+    return this.task.dueDate;
   }
+
+  String get category {
+    return this.task.category;
+  }
+
 }

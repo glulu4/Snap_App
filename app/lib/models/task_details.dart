@@ -1,3 +1,4 @@
+import 'package:app/models/task.dart';
 import 'package:flutter/material.dart';
 
 class TaskDetails {
