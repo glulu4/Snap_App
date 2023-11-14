@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Calendar()),
+                  MaterialPageRoute(builder: (context) => CalendarView()),
                 );
               },
             ),
@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
               },
             ),
             ElevatedButton(
-              child: Text('Pop up'),
+              child: const Text('Pop up'),
               onPressed: () {
                 showDialog(
                     context: context,

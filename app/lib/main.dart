@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/tasklist': (context) => TaskList(),
-        '/calendar': (context) => Calendar(),
+        '/calendar': (context) => CalendarView(),
         // Add as many routes as you have pages
       },
     );
