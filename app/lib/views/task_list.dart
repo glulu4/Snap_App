@@ -32,9 +32,9 @@ class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TaskList Page'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('TaskList Page'),
+      // ),
       body: Center(
         child: Container(
           decoration: BoxDecoration(
