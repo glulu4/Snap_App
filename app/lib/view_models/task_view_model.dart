@@ -22,4 +22,16 @@ class TaskViewModel {
     return this.task.isCompleted;
   }
 
+  int get priority {
+    return this.task.priority;
+  }
+
+  Task? get subtask {
+    return this.task.subtask;
+  }
+
+  int get effort {
+    return this.task.effort;
+  }
+
 }
