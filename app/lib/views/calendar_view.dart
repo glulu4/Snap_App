@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../utils.dart';
+import '../calendar_utils.dart';
 
 // main widget containing all widgets for calendar view
 class CalendarView extends StatelessWidget {
@@ -12,25 +12,27 @@ class CalendarView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Calendar View'),
       ),
-      body: Row(
-        children: [
-          Container(
-            // height: MediaQuery.of(context).size.height * 0.8,
-            width: MediaQuery.of(context).size.width * 0.6,
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.03,
-                vertical: MediaQuery.of(context).size.height * 0.03),
-                // EdgeInsets.only(bottom: 50),
-            child: Calendar(),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.03,
-                vertical: MediaQuery.of(context).size.height * 0.03),
-            child: EventInput(),
-          ),
-        ],
+      body: Expanded(
+        child: Row(
+          children: [
+            Container(
+              // height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.03,
+                  vertical: MediaQuery.of(context).size.height * 0.03),
+              // EdgeInsets.only(bottom: 50),
+              child: Calendar(),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.03,
+                  vertical: MediaQuery.of(context).size.height * 0.03),
+              child: EventInput(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -117,7 +119,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // const Padding(
         //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -130,7 +132,7 @@ class _CalendarState extends State<Calendar> {
         //     textAlign: TextAlign.left,
         //   ),
         // ),
-        Flexible(
+        Expanded(
           // flex: 2,
           child: SingleChildScrollView(
             child: TableCalendar<Event>(
@@ -196,9 +198,6 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
-
-
-
 // input widget & state
 class EventInput extends StatefulWidget {
   @override
@@ -238,7 +237,8 @@ class _EventInputState extends State<EventInput> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start, // Aligns children to the start of the horizontal axis
+      crossAxisAlignment: CrossAxisAlignment
+          .start, // Aligns children to the start of the horizontal axis
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),

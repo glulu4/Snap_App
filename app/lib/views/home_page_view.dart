@@ -2,47 +2,40 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../widgets/task_list.dart'; // task list page
-import 'calendar.dart'; // calendar page
-// import '../Home.dart';
-import 'app_bar.dart';
-import 'add_task_view.dart';
+import '../widgets/tasklist_widget.dart';
+import 'calendar_view.dart';
+import '../widgets/appbar_widget.dart';
+import 'tasklist_view.dart';
 
 class HomePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-      appBar: MyAppBar(
-        // title: Text('Home Screen'),
-      ),
-      body: Center(
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child:
-                    TaskList(), // Wrap TaskList with Expanded to give it a constrained width
-              ),
-              Expanded(
-                child: Calendar(),
-                  // Wrap Text with Expanded as well if you want it to take up remaining space evenly
-              ),
-            ],
+    return Scaffold(
+      appBar: MyAppBar(),
+      
+      body: Row(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child:Container(
+              // height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.5,
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.03,
+                  vertical: MediaQuery.of(context).size.height * 0.05),
+              child: TaskListWidget(),
+            ),
           ),
-        ),
+         Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.03,
+                  vertical: MediaQuery.of(context).size.height * 0.03),
+              child: Calendar(),
+            ),
+        ],
       ),
     );
-
-
-
-
-
-
-
-
-
 
     // return Scaffold(
     //   appBar: MyAppBar(),
