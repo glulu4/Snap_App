@@ -10,6 +10,14 @@ class TasklistView extends StatelessWidget {
       appBar: MyAppBar(), // Ensure MyAppBar is correctly imported
       body: Row(
           children: [
+            Container(
+              // height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.5,
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.03,
+                  vertical: MediaQuery.of(context).size.height * 0.03),
+              child: TaskInputWidget(),
+            ),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
@@ -20,14 +28,6 @@ class TasklistView extends StatelessWidget {
                     vertical: MediaQuery.of(context).size.height * 0.05),
                 child: TaskListWidget(),
               ),
-            ),
-            Container(
-              // height: MediaQuery.of(context).size.height * 0.8,
-              width: MediaQuery.of(context).size.width * 0.5,
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.03,
-                  vertical: MediaQuery.of(context).size.height * 0.03),
-              child: TaskInputWidget(),
             ),
           ],
         ),
