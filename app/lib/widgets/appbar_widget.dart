@@ -15,10 +15,10 @@ class _MyAppBarState extends State<MyAppBar> {
       backgroundColor: Colors.indigo[200],
       elevation: 4.0,
       title: Text('Snap, The Productivity App'),
-      leading: IconButton(
-        onPressed: (){},
-        icon: Image.asset("./SnapIcon.png")
-      ),
+      // leading: IconButton(
+      //   onPressed: (){},
+      //   icon: Image.asset("./SnapIcon.png")
+      // ),
       actions: [
         IconButton(
           onPressed: () {
@@ -40,7 +40,6 @@ class _MyAppBarState extends State<MyAppBar> {
           onPressed: () {},
           icon: Icon(Icons.access_time_filled_rounded),
         ),
-        // Add any actions you need here
       ],
     );
   }

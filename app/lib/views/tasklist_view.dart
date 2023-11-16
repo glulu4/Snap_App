@@ -7,7 +7,7 @@ class TasklistView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(), // Ensure MyAppBar is correctly imported
+      appBar: MyAppBar(), 
       body: Row(
           children: [
             Container(

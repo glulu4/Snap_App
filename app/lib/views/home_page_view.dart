@@ -1,11 +1,7 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import '../widgets/tasklist_widget.dart';
-import 'calendar_view.dart';
+import '../widgets/calendar_widget.dart';
 import '../widgets/appbar_widget.dart';
-import 'tasklist_view.dart';
 
 class HomePage extends StatelessWidget {
   @override

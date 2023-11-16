@@ -38,10 +38,10 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       final task = Task(
         id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
         title: titleController.text,
-        dueDate: DateTime.parse(dueDateController.text), // Example date
-        category: categoryController.text, // Example category
-        priority: priority ?? 1, // Example priority
-        effort: effort ?? 1, // Example effort
+        dueDate: DateTime.parse(dueDateController.text), 
+        category: categoryController.text, 
+        priority: priority ?? 1, 
+        effort: effort ?? 1, 
         isCompleted: false,
       );
 
@@ -49,7 +49,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       titleController.clear();
       dueDateController.clear();
       categoryController.clear();
-      // Reset priority and effort
+      // reset priority and effort
       setState(() {
         priority = null;
         effort = null;
@@ -63,7 +63,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   // input form widget
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<TaskListViewModel>(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

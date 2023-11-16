@@ -1,12 +1,10 @@
 import 'package:app/models/task.dart';
-import 'package:app/task_utils.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
 import 'package:app/views/detailed_task_view.dart';
 import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class TaskListWidget extends StatefulWidget {
   @override
@@ -27,7 +25,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           _isLoading = false;
         });
       }).catchError((error) {
-        // Handle any errors here
+        // handle errors here
       });
       _isInit = false;
     }
@@ -86,14 +84,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           hoverColor: Colors.blueGrey[700],
                           icon: Icon(Icons.filter_alt),
                           onPressed: () {
-                            // Action to be performed when filter button is pressed
+                            // action to be performed when filter button is pressed
                           },
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.sort),
                         onPressed: () {
-                          // Action to be performed when sort button is pressed
+                          // action to be performed when sort button is pressed
                         },
                         color: Colors.blueGrey[300],
                         hoverColor: Colors.blueGrey[700],
@@ -114,15 +112,15 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         trailing: Checkbox(
                           value: taskViewModel.isCompleted,
                           onChanged: (bool? value) {
-                            // Create a new Task instance with updated values using copyWith
+                            // create a new Task instance with updated values using copyWith
                             Task updatedTask =
                                 taskViewModel.task.copyWith(isCompleted: value);
 
-                            // Create a new TaskViewModel with the updated Task
+                            // create a new TaskViewModel with the updated Task
                             TaskViewModel updatedTaskViewModel =
                                 TaskViewModel(task: updatedTask);
 
-                            // Update the task in the viewModel
+                            // update the task in the viewModel
                             viewModel.editTask(updatedTaskViewModel);
                           },
                         ),

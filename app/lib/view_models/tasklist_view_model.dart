@@ -28,19 +28,18 @@ class TaskListViewModel extends ChangeNotifier {
     int index =
         _tasks.indexWhere((task) => task.task.id == updatedTask.task.id);
     if (index != -1) {
-      // Create a new Task instance with updated values using copyWith
+      // create new task instance with updated values using copyWith
       Task updatedModel = _tasks[index].task.copyWith(
-            // Add the properties you want to update
+            // add the properties to update
             title: updatedTask.title,
             dueDate: updatedTask.dueDate,
             category: updatedTask.category,
             isCompleted: updatedTask.isCompleted,
             priority: updatedTask.priority,
             effort: updatedTask.effort,
-            // ... other properties if needed ...
           );
 
-      // Update the TaskViewModel with the new Task instance
+      // update the TaskViewModel with the new task instance
       _tasks[index] = TaskViewModel(task: updatedModel);
 
       saveTasksToPreferences();

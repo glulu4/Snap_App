@@ -2,7 +2,6 @@ import 'package:app/models/task.dart';
 import 'package:app/task_utils.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
-import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +22,7 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
   int? priority;
   int? effort;
 
-  // view task details/delete
+  // view task details
   void showTaskDetailsDialog(
     BuildContext context,
     TaskViewModel taskViewModel,
@@ -41,8 +40,6 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
                 Text('Priority: ${taskViewModel.priority}'),
                 Text('Effort: ${taskViewModel.effort}'),
                 Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
-
-                // ... other details ...
               ],
             ),
           ),
@@ -169,17 +166,16 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
               child: Text('Save'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  // Create a new Task instance with updated values
+                  // create a new Task instance with updated values
                   Task updatedTask = taskViewModel.task.copyWith(
                     title: titleController.text,
                     dueDate: DateTime.parse(dueDateController.text),
-                    category: categoryController.text, // Example category
-                    priority: priority ?? 1, // Example priority
-                    effort: effort ?? 1, // Example effort
-                    // Set other properties using the respective controllers
+                    category: categoryController.text, 
+                    priority: priority ?? 1, 
+                    effort: effort ?? 1, 
                   );
 
-                  // Update the task in the viewModel
+                  // update the task in the viewModel
                   Provider.of<TaskListViewModel>(context, listen: false)
                       .editTask(TaskViewModel(task: updatedTask));
 
@@ -195,7 +191,7 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
                 final viewModel =
                     Provider.of<TaskListViewModel>(context, listen: false);
                 viewModel.deleteTask(taskViewModel);
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -206,7 +202,6 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Minimal widget since the main functionality is in dialogs
     return Container();
     
   }
