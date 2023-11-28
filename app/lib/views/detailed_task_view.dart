@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-GlobalKey<_DetailedTaskWidgetState> detailedTaskWidgetKey = GlobalKey<_DetailedTaskWidgetState>();
+GlobalKey<_DetailedTaskWidgetState> detailedTaskWidgetKey =
+    GlobalKey<_DetailedTaskWidgetState>();
 
 class DetailedTaskWidget extends StatefulWidget {
-   DetailedTaskWidget({Key? key}) : super(key: key);
+  DetailedTaskWidget({Key? key}) : super(key: key);
 
   @override
   _DetailedTaskWidgetState createState() => _DetailedTaskWidgetState();
@@ -35,7 +36,8 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Due Date: ${DateFormat('MM/dd/yyyy').format(taskViewModel.dueDate)}'),
+                Text(
+                    'Due Date: ${DateFormat('MM/dd/yyyy').format(taskViewModel.dueDate)}'),
                 Text('Category: ${taskViewModel.category}'),
                 Text('Priority: ${taskViewModel.priority}'),
                 Text('Effort: ${taskViewModel.effort}'),
@@ -170,9 +172,9 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
                   Task updatedTask = taskViewModel.task.copyWith(
                     title: titleController.text,
                     dueDate: DateTime.parse(dueDateController.text),
-                    category: categoryController.text, 
-                    priority: priority ?? 1, 
-                    effort: effort ?? 1, 
+                    category: categoryController.text,
+                    priority: priority ?? 1,
+                    effort: effort ?? 1,
                   );
 
                   // update the task in the viewModel
@@ -203,6 +205,5 @@ class _DetailedTaskWidgetState extends State<DetailedTaskWidget> {
   @override
   Widget build(BuildContext context) {
     return Container();
-    
   }
 }

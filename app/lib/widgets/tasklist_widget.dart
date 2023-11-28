@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 // gloabl key error from her
 
-
 class TaskListWidget extends StatefulWidget {
   @override
   _TaskListWidgetState createState() => _TaskListWidgetState();
@@ -33,10 +32,10 @@ class _TaskListWidgetState extends State<TaskListWidget> {
       _isInit = false;
     }
   }
+
   // widget list component
   @override
   Widget build(BuildContext context) {
-   
     final viewModel = Provider.of<TaskListViewModel>(context);
     return Container(
       child: Stack(
@@ -63,7 +62,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     topRight: Radius.circular(10),
                   ),
                   child: AppBar(
-                    backgroundColor: Colors.indigo[200],
+                    backgroundColor: const Color.fromRGBO(102, 136, 255, 0.83),
                     title: Text('Tasks'),
                     automaticallyImplyLeading: false,
                   ),
@@ -91,26 +90,17 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           },
                         ),
                       ),
-
                       Tooltip(
                         message: "Sort",
-
-
-
-                        
                         child: IconButton(
-                        icon: Icon(Icons.sort),
-                        onPressed: () {
-                          // action to be performed when sort button is pressed
-                        },
-                        color: Colors.blueGrey[300],
-                        hoverColor: Colors.blueGrey[700],
-                      ),
-
+                          icon: Icon(Icons.sort),
+                          onPressed: () {
+                            // action to be performed when sort button is pressed
+                          },
+                          color: Colors.blueGrey[300],
+                          hoverColor: Colors.blueGrey[700],
+                        ),
                       )
-
-
-
                     ],
                   ),
                 ),
