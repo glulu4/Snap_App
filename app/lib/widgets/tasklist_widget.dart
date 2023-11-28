@@ -6,6 +6,9 @@ import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// gloabl key error from her
+
+
 class TaskListWidget extends StatefulWidget {
   @override
   _TaskListWidgetState createState() => _TaskListWidgetState();
@@ -78,7 +81,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Tooltip(
-                        message: 'This is a tooltip',
+                        message: 'Filter',
                         child: IconButton(
                           color: Colors.blueGrey[300],
                           hoverColor: Colors.blueGrey[700],
@@ -88,7 +91,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                           },
                         ),
                       ),
-                      IconButton(
+
+                      Tooltip(
+                        message: "Sort",
+
+
+
+                        
+                        child: IconButton(
                         icon: Icon(Icons.sort),
                         onPressed: () {
                           // action to be performed when sort button is pressed
@@ -96,6 +106,11 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         color: Colors.blueGrey[300],
                         hoverColor: Colors.blueGrey[700],
                       ),
+
+                      )
+
+
+
                     ],
                   ),
                 ),

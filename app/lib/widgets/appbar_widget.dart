@@ -19,6 +19,19 @@ class _MyAppBarState extends State<MyAppBar> {
       //   onPressed: (){},
       //   icon: Image.asset("./SnapIcon.png")
       // ),
+
+        leading:  Navigator.canPop(context)
+        ? null // If can pop, let Flutter handle the back button
+        : IconButton(
+            // If cannot pop, show your logo
+            onPressed: () {
+              // Action when logo is pressed (if any)
+            },
+            icon: Image.asset(
+                "./SnapIcon.png"), // Replace with your logo's asset path
+          ),
+
+
       actions: [
         IconButton(
           onPressed: () {
