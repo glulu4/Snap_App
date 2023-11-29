@@ -28,19 +28,16 @@ class TaskListViewModel extends ChangeNotifier {
     int index =
         _tasks.indexWhere((task) => task.task.id == updatedTask.task.id);
     if (index != -1) {
-      // Create a new Task instance with updated values using copyWith
       Task updatedModel = _tasks[index].task.copyWith(
-            // Add the properties you want to update
             title: updatedTask.title,
             dueDate: updatedTask.dueDate,
             category: updatedTask.category,
             isCompleted: updatedTask.isCompleted,
             priority: updatedTask.priority,
             effort: updatedTask.effort,
-            // ... other properties if needed ...
+            subtasks: updatedTask.subtasks, // Now updating subtask as well
           );
 
-      // Update the TaskViewModel with the new Task instance
       _tasks[index] = TaskViewModel(task: updatedModel);
 
       saveTasksToPreferences();
@@ -48,7 +45,7 @@ class TaskListViewModel extends ChangeNotifier {
     }
   }
 
-  // save tasks to local storage for now
+  // save tasks to local storage
   Future<void> saveTasksToPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tasksString = _tasks
@@ -68,5 +65,4 @@ class TaskListViewModel extends ChangeNotifier {
     _tasks = loadedTasks.map((task) => TaskViewModel(task: task)).toList();
     notifyListeners();
   }
-  
 }

@@ -96,10 +96,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
 
                       Tooltip(
                         message: "Sort",
-
-
-
-                        
                         child: IconButton(
                         icon: Icon(Icons.sort),
                         onPressed: () {
