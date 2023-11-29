@@ -61,10 +61,10 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       final task = Task(
         id: DateTime.now().millisecondsSinceEpoch,
         title: titleController.text,
-        dueDate: DateTime.parse(dueDateController.text),
-        category: categoryController.text,
-        priority: priority ?? 1,
-        effort: effort ?? 1,
+        dueDate: DateTime.parse(dueDateController.text), // Example date
+        category: categoryController.text, // Example category
+        priority: priority ?? 1, // Example priority
+        effort: effort ?? 1, // Example effort
         isCompleted: false,
         subtasks: subtasks,
       );
@@ -90,6 +90,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<TaskListViewModel>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

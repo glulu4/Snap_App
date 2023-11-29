@@ -8,9 +8,9 @@ class TaskUtils {
   static Future<void> selectDate(
     BuildContext context, 
     TextEditingController controller, 
-    TaskViewModel? taskViewModel // Make this parameter optional
+    TaskViewModel? taskViewModel 
   ) async {
-    // Use a default date if taskViewModel is null or use its dueDate
+   
     DateTime initialDate = taskViewModel?.dueDate ?? DateTime.now();
 
     final DateTime? picked = await showDatePicker(
