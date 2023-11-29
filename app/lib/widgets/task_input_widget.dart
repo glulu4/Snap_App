@@ -253,6 +253,5 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       ],
     ),
     );
-
   }
 }
