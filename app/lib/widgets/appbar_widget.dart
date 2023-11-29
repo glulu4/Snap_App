@@ -5,7 +5,7 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   _MyAppBarState createState() => _MyAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(200);
+  Size get preferredSize => Size.fromHeight(75);
 }
 
 class _MyAppBarState extends State<MyAppBar> {
@@ -40,17 +40,13 @@ class _MyAppBarState extends State<MyAppBar> {
       actions: [
         IconButton(
           onPressed: () {},
+          icon: Icon(Icons.draw, size: 30.0),
+        ),
+        IconButton(
+          onPressed: () {},
           icon: Icon(
-            Icons.menu,
+            Icons.menu, size: 30.0
           ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.wine_bar, size: 40.0),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.access_time_filled_rounded, size: 40.0),
         ),
       ],
     );

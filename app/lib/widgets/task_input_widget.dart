@@ -4,25 +4,33 @@ import 'package:app/models/task.dart';
 import 'package:app/task_utils.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TaskInputWidget extends StatefulWidget {
+  final bool isEditMode; // to determine if it's edit mode
+  final TaskViewModel?
+      initialTaskViewModel; // the task to be edited, if in edit mode
+
+  TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
+
   @override
   _TaskInputWidgetState createState() => _TaskInputWidgetState();
 }
 
 class _TaskInputWidgetState extends State<TaskInputWidget> {
+  int? priority;
+  int? effort;
+  bool isAddingSubtask = false;
+  List<Task> subtasks = [];
+  final List<int> options = [1, 2, 3];
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final dueDateController = TextEditingController();
   final categoryController = TextEditingController();
-  int? priority;
-  int? effort;
-  final List<int> options = [1, 2, 3];
-
   final subtaskTitleController = TextEditingController();
   final subtaskDueDateController = TextEditingController();
-  bool isAddingSubtask = false;
-  List<Task> subtasks = [];
 
   @override
   void dispose() {
@@ -32,6 +40,35 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     subtaskTitleController.dispose();
     subtaskDueDateController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEditMode && widget.initialTaskViewModel != null) {
+      // Initialize fields with the existing task data
+      titleController.text = widget.initialTaskViewModel!.title;
+      dueDateController.text = DateFormat('yyyy-MM-dd')
+          .format(widget.initialTaskViewModel!.dueDate)
+          .toString();
+      categoryController.text = widget.initialTaskViewModel!.category;
+      priority = widget.initialTaskViewModel!.priority;
+      effort = widget.initialTaskViewModel!.effort;
+    }
+  }
+
+  void _clearFormFields() {
+    titleController.clear();
+    dueDateController.clear();
+    categoryController.clear();
+    subtaskTitleController.clear();
+    subtaskDueDateController.clear();
+    setState(() {
+      priority = null;
+      effort = null;
+      subtasks.clear();
+      isAddingSubtask = false;
+    });
   }
 
   void _addSubtask() {
@@ -58,39 +95,54 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     if (_formKey.currentState!.validate()) {
       final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
 
-      final task = Task(
-        id: DateTime.now().millisecondsSinceEpoch,
-        title: titleController.text,
-        dueDate: DateTime.parse(dueDateController.text), // Example date
-        category: categoryController.text, // Example category
-        priority: priority ?? 1, // Example priority
-        effort: effort ?? 1, // Example effort
-        isCompleted: false,
-        subtasks: subtasks,
-      );
+      if (widget.isEditMode) {
+        // Handle task edit logic here
+        // create a new Task instance with updated values
+        Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
+          title: titleController.text,
+          dueDate: DateTime.parse(dueDateController.text),
+          category: categoryController.text,
+          priority: priority ?? 1,
+          effort: effort ?? 1,
+          subtasks: subtasks,
+        );
 
-      viewModel.addTask(TaskViewModel(task: task));
+        // update the task in the viewModel
+        Provider.of<TaskListViewModel>(context, listen: false)
+            .editTask(TaskViewModel(task: updatedTask));
+
+        Navigator.of(context).pop();
+      } else {
+        // Your existing task add logic
+        final task = Task(
+          id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
+          title: titleController.text,
+          dueDate: DateTime.parse(dueDateController.text),
+          category: categoryController.text,
+          priority: priority ?? 1,
+          effort: effort ?? 1,
+          isCompleted: false,
+          subtasks: subtasks,
+        );
+
+        viewModel.addTask(TaskViewModel(task: task));
+      }
       _clearFormFields();
+      // reset priority and effort
+      setState(() {
+        priority = null;
+        effort = null;
+      });
+    } else {
+      print('Form is not valid');
     }
-  }
-
-  void _clearFormFields() {
-    titleController.clear();
-    dueDateController.clear();
-    categoryController.clear();
-    subtaskTitleController.clear();
-    subtaskDueDateController.clear();
-    setState(() {
-      priority = null;
-      effort = null;
-      subtasks.clear();
-      isAddingSubtask = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<TaskListViewModel>(context);
+    // Update the UI elements based on the mode
+    String headerText = widget.isEditMode ? 'Edit Task:' : 'Add a Task:';
+    String buttonText = widget.isEditMode ? 'Save Changes' : 'Add Task';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +150,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Text(
-            'Add a Task:',
+            headerText,
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
@@ -111,13 +163,11 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                 children: [
                   _buildTaskInputFields(),
                   const SizedBox(height: 20),
-                  if (isAddingSubtask)
-                    _buildSubtaskInputFields(),
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-
-                      const SizedBox(height: 20),
+                  if (isAddingSubtask) _buildSubtaskInputFields(),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox(height: 20),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
@@ -126,10 +176,10 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                                 vertical: 20, horizontal: 20),
                           ),
                           onPressed: _submitForm,
-                          child: const Text('Add Task'),
+                          child: Text(buttonText),
                         ),
                         const SizedBox(height: 20),
-                        if (!isAddingSubtask)
+                        if (!isAddingSubtask && !widget.isEditMode)
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
@@ -144,10 +194,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                             },
                             child: const Text('Add Sub-Task'),
                           ),
-
-                    ]
-                  ),
-
+                      ]),
                 ],
               ),
             ),
@@ -157,56 +204,62 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     );
   }
 
+  // form for task input 
   Widget _buildTaskInputFields() {
     return Column(
       children: [
         TaskUtils.createTextFormField(
-          controller: titleController,
-          labelText: 'Task Name',
-          validator: (value) => value == null || value.isEmpty ? 'Please enter a task name' : null),
+            controller: titleController,
+            labelText: 'Task Name',
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter a task name'
+                : null),
         const SizedBox(height: 20),
-
         TaskUtils.createTextFormField(
-          controller: dueDateController,
-          labelText: 'Due Date',
-          readOnly: true,
-          onTap: () => TaskUtils.selectDate(context, dueDateController, null),
-          validator: (value) => value == null || value.isEmpty ? 'Please enter a due date' : null),
+            controller: dueDateController,
+            labelText: 'Due Date',
+            readOnly: true,
+            onTap: () => TaskUtils.selectDate(context, dueDateController, null),
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter a due date'
+                : null),
         const SizedBox(height: 20),
-
         TaskUtils.createTextFormField(
-          controller: categoryController,
-          labelText: 'Category',
-          validator: (value) => value == null || value.isEmpty ? 'Please enter a category' : null),
+            controller: categoryController,
+            labelText: 'Category',
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter a category'
+                : null),
         const SizedBox(height: 20),
-
         TaskUtils.createDropdownButtonFormField(
           labelText: 'Select a Priority',
           value: priority,
           options: options,
           onChanged: (int? newValue) => setState(() => priority = newValue),
-          validator: (int? value) => value == null ? 'Please select a priority' : null,
+          validator: (int? value) =>
+              value == null ? 'Please select a priority' : null,
         ),
         const SizedBox(height: 20),
-
         TaskUtils.createDropdownButtonFormField(
           labelText: 'Select an Effort',
           value: effort,
           options: options,
           onChanged: (int? newValue) => setState(() => effort = newValue),
-          validator: (int? value) => value == null ? 'Please select an effort' : null,
+          validator: (int? value) =>
+              value == null ? 'Please select an effort' : null,
         ),
       ],
     );
   }
 
+  // subtask form inputs
   Widget _buildSubtaskInputFields() {
     return Padding(
-      padding: EdgeInsets.only(left: 30.0, top:30.0),
-      child:     Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+      padding: EdgeInsets.only(left: 30.0, top: 30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
@@ -219,39 +272,39 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
               ),
             ],
           ),
-
-        TaskUtils.createTextFormField(
-          controller: subtaskTitleController,
-          labelText: 'Subtask Name',
-          validator: (value) => value == null || value.isEmpty ? 'Please enter a subtask name' : null),
-        const SizedBox(height: 20),
-
-        TaskUtils.createTextFormField(
-          controller: subtaskDueDateController,
-          labelText: 'Subtask Due Date',
-          readOnly: true,
-          onTap: () => TaskUtils.selectDate(context, subtaskDueDateController, null),
-          validator: (value) => value == null || value.isEmpty ? 'Please enter a subtask due date' : null),
-        const SizedBox(height: 20),
-
-
-
-
-        for (var subtask in subtasks)
-          ListTile(
-            title: Text(subtask.title),
-            subtitle: Text('Due: ${subtask.dueDate.toString()}'),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                setState(() {
-                  subtasks.remove(subtask);
-                });
-              },
+          TaskUtils.createTextFormField(
+              controller: subtaskTitleController,
+              labelText: 'Subtask Name',
+              validator: (value) => value == null || value.isEmpty
+                  ? 'Please enter a subtask name'
+                  : null),
+          const SizedBox(height: 20),
+          TaskUtils.createTextFormField(
+              controller: subtaskDueDateController,
+              labelText: 'Subtask Due Date',
+              readOnly: true,
+              onTap: () =>
+                  TaskUtils.selectDate(context, subtaskDueDateController, null),
+              validator: (value) => value == null || value.isEmpty
+                  ? 'Please enter a subtask due date'
+                  : null),
+          const SizedBox(height: 20),
+          for (var subtask in subtasks)
+            ListTile(
+              title: Text(subtask.title),
+              
+              subtitle: Text('Due Date: ${DateFormat('yyyy-MM-dd').format(subtask.dueDate)}'),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  setState(() {
+                    subtasks.remove(subtask);
+                  });
+                },
+              ),
             ),
-          ),
-      ],
-    ),
+        ],
+      ),
     );
   }
 }

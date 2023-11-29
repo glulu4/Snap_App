@@ -1,9 +1,10 @@
 import 'package:app/models/task.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
-import 'package:app/views/detailed_task_view.dart';
+// import 'package:app/views/detailed_task_view.dart';
 import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 // gloabl key error from her
@@ -16,7 +17,11 @@ class TaskListWidget extends StatefulWidget {
 class _TaskListWidgetState extends State<TaskListWidget> {
   bool _isLoading = true;
   bool _isInit = true;
+  final List<int> options = [1, 2, 3];
+  int? priority;
+  int? effort;
 
+  // load tasks
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -32,6 +37,73 @@ class _TaskListWidgetState extends State<TaskListWidget> {
       _isInit = false;
     }
   }
+
+
+// view task details
+  void showTaskDetailsDialog(
+    BuildContext context,
+    TaskViewModel taskViewModel,
+  ) {
+    // pop up box of details
+   showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(taskViewModel.title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                 Text('Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}'),
+                 Text('Category: ${taskViewModel.category}'),
+                 Text('Priority: ${taskViewModel.priority}'),
+                 Text('Effort: ${taskViewModel.effort}'),
+                Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
+              ],
+              // Displaying task details
+              // ...
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Edit'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                navigateToEditTask(context, taskViewModel);
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                deleteTask(context, taskViewModel);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Function to handle task editing
+  void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TasklistView(
+          isEditMode: true,
+          initialTaskViewModel: taskViewModel,
+        ),
+      ),
+    );
+  }
+
+  // Function to handle task deletion
+  void deleteTask(BuildContext context, TaskViewModel taskViewModel) {
+    final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
+    viewModel.deleteTask(taskViewModel);
+    Navigator.of(context).pop(); // Close the dialog
+    // Optionally, show a snackbar or other feedback to the user
+  }
+
 
   // widget list component
   @override
@@ -92,6 +164,10 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       ),
                       Tooltip(
                         message: "Sort",
+
+
+
+                        
                         child: IconButton(
                           icon: Icon(Icons.sort),
                           onPressed: () {
@@ -104,7 +180,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     ],
                   ),
                 ),
-                DetailedTaskWidget(key: detailedTaskWidgetKey),
                 Expanded(
                   child: ListView.builder(
                     itemCount: viewModel.tasks.length,
@@ -112,8 +187,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       final taskViewModel = viewModel.tasks[index];
                       return ListTile(
                         title: Text(taskViewModel.title),
-                        onTap: () => detailedTaskWidgetKey.currentState
-                            ?.showTaskDetailsDialog(context, taskViewModel),
+                        onTap: () => showTaskDetailsDialog(context, taskViewModel),
                         trailing: Checkbox(
                           value: taskViewModel.isCompleted,
                           onChanged: (bool? value) {
