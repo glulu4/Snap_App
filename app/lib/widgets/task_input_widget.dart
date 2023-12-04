@@ -66,14 +66,14 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     setState(() {
       priority = null;
       effort = null;
-      subtasks.clear();
+      // subtasks.clear();
       isAddingSubtask = false;
     });
   }
 
   void _addSubtask() {
     if (_formKey.currentState!.validate()) {
-      final subtask = Task(
+      final subtask = Task(       
         id: DateTime.now().millisecondsSinceEpoch,
         title: subtaskTitleController.text,
         dueDate: DateTime.parse(subtaskDueDateController.text),
@@ -84,15 +84,18 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       );
 
       setState(() {
+       
         subtasks.add(subtask);
         subtaskTitleController.clear();
         subtaskDueDateController.clear();
+         print('Added subtask. Current count: ${subtasks.length}');
       });
     }
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      print('Submitting with subtasks: ${subtasks.length}');
       final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
 
       if (widget.isEditMode) {

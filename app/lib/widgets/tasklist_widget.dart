@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:app/models/task.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
@@ -6,6 +8,8 @@ import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
+
 
 // gloabl key error from her
 
@@ -53,11 +57,33 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                 Text('Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}'),
-                 Text('Category: ${taskViewModel.category}'),
+                 Text('Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}', 
+                 style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                 Text('Category: ${taskViewModel.category}', 
+                 style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                  Text('Priority: ${taskViewModel.priority}'),
                  Text('Effort: ${taskViewModel.effort}'),
-                Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
+                 Text('Subtask', style: TextStyle(
+                    decoration: TextDecoration.underline, ),
+                ),
+                  if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                  for (var subtask in taskViewModel.task.subtasks)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 5.0), // Indent the subtasks
+                      child: ListTile(
+                        // title: Text(subtask.title),
+                        title: Text(subtask.title, style: TextStyle(fontSize: 15.0)),
+                        subtitle: Text(
+                              'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
+                        // Other properties of the subtask can be displayed here
+                      ),
+                    ),
+                ]
+                 
+                // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
               ],
               // Displaying task details
               // ...
@@ -182,11 +208,23 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    
                     itemCount: viewModel.tasks.length,
                     itemBuilder: (context, index) {
                       final taskViewModel = viewModel.tasks[index];
-                      return ListTile(
+                      // print(
+                      //     'Task: ${taskViewModel.title}, Subtasks: ${taskViewModel.task.subtasks.length}');
+                      // print(taskViewModel.toString());
+                      
+                      return Column(
+                        children: [
+                        ListTile(
+                        
                         title: Text(taskViewModel.title),
+                        subtitle: Text(
+                                'Due: ${DateFormat.yMMMd().format(taskViewModel.dueDate)}'),
+                        
+
                         onTap: () => showTaskDetailsDialog(context, taskViewModel),
                         trailing: Checkbox(
                           value: taskViewModel.isCompleted,
@@ -203,7 +241,31 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                             viewModel.editTask(updatedTaskViewModel);
                           },
                         ),
+
+                        
+                      ),
+                        if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                            for (var subtask in taskViewModel.task.subtasks)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0), // Indent the subtasks
+                                child: ListTile(
+                                  // title: Text(subtask.title),
+                                  title: Text('${subtask.title}'),
+                                  subtitle: Text(
+                                        'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
+                                  // Other properties of the subtask can be displayed here
+                                ),
+                              ),
+                          ]
+
+
+
+
+                        ],
                       );
+                      
+
                     },
                   ),
                 ),

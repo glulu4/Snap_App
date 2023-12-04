@@ -47,11 +47,13 @@ class TaskListViewModel extends ChangeNotifier {
 
   // save tasks to local storage
   Future<void> saveTasksToPreferences() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tasksString = _tasks
         .map((taskViewModel) => json.encode(taskViewModel.task.toJson()))
         .toList();
     await prefs.setStringList('tasks', tasksString);
+    
   }
 
   // load tasks from local storage
