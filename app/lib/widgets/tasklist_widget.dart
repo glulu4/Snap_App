@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer';
 
-
 // gloabl key error from her
 
 class TaskListWidget extends StatefulWidget {
@@ -42,14 +41,13 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     }
   }
 
-
 // view task details
   void showTaskDetailsDialog(
     BuildContext context,
     TaskViewModel taskViewModel,
   ) {
     // pop up box of details
-   showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -57,32 +55,38 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                 Text('Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}', 
-                 style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  'Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                 Text('Category: ${taskViewModel.category}', 
-                 style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  'Category: ${taskViewModel.category}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                 Text('Priority: ${taskViewModel.priority}'),
-                 Text('Effort: ${taskViewModel.effort}'),
-                 Text('Subtask', style: TextStyle(
-                    decoration: TextDecoration.underline, ),
+                Text('Priority: ${taskViewModel.priority}'),
+                Text('Effort: ${taskViewModel.effort}'),
+                Text(
+                  'Subtask',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                  if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                if (taskViewModel.task.subtasks.isNotEmpty) ...[
                   for (var subtask in taskViewModel.task.subtasks)
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 5.0), // Indent the subtasks
                       child: ListTile(
-                        // title: Text(subtask.title),
-                        title: Text(subtask.title, style: TextStyle(fontSize: 15.0)),
-                        subtitle: Text(
+                          // title: Text(subtask.title),
+                          title: Text(subtask.title,
+                              style: TextStyle(fontSize: 15.0)),
+                          subtitle: Text(
                               'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                        // Other properties of the subtask can be displayed here
-                      ),
+                          // Other properties of the subtask can be displayed here
+                          ),
                     ),
                 ]
-                 
+
                 // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
               ],
               // Displaying task details
@@ -91,7 +95,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Edit'),
+              child: Text('edit'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 navigateToEditTask(context, taskViewModel);
@@ -129,7 +133,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     Navigator.of(context).pop(); // Close the dialog
     // Optionally, show a snackbar or other feedback to the user
   }
-
 
   // widget list component
   @override
@@ -190,10 +193,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       ),
                       Tooltip(
                         message: "Sort",
-
-
-
-                        
                         child: IconButton(
                           icon: Icon(Icons.sort),
                           onPressed: () {
@@ -208,64 +207,53 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    
                     itemCount: viewModel.tasks.length,
                     itemBuilder: (context, index) {
                       final taskViewModel = viewModel.tasks[index];
                       // print(
                       //     'Task: ${taskViewModel.title}, Subtasks: ${taskViewModel.task.subtasks.length}');
                       // print(taskViewModel.toString());
-                      
+
                       return Column(
                         children: [
-                        ListTile(
-                        
-                        title: Text(taskViewModel.title),
-                        subtitle: Text(
+                          ListTile(
+                            title: Text(taskViewModel.title),
+                            subtitle: Text(
                                 'Due: ${DateFormat.yMMMd().format(taskViewModel.dueDate)}'),
-                        
+                            onTap: () =>
+                                showTaskDetailsDialog(context, taskViewModel),
+                            trailing: Checkbox(
+                              value: taskViewModel.isCompleted,
+                              onChanged: (bool? value) {
+                                // create a new Task instance with updated values using copyWith
+                                Task updatedTask = taskViewModel.task
+                                    .copyWith(isCompleted: value);
 
-                        onTap: () => showTaskDetailsDialog(context, taskViewModel),
-                        trailing: Checkbox(
-                          value: taskViewModel.isCompleted,
-                          onChanged: (bool? value) {
-                            // create a new Task instance with updated values using copyWith
-                            Task updatedTask =
-                                taskViewModel.task.copyWith(isCompleted: value);
+                                // create a new TaskViewModel with the updated Task
+                                TaskViewModel updatedTaskViewModel =
+                                    TaskViewModel(task: updatedTask);
 
-                            // create a new TaskViewModel with the updated Task
-                            TaskViewModel updatedTaskViewModel =
-                                TaskViewModel(task: updatedTask);
-
-                            // update the task in the viewModel
-                            viewModel.editTask(updatedTaskViewModel);
-                          },
-                        ),
-
-                        
-                      ),
-                        if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                                // update the task in the viewModel
+                                viewModel.editTask(updatedTaskViewModel);
+                              },
+                            ),
+                          ),
+                          if (taskViewModel.task.subtasks.isNotEmpty) ...[
                             for (var subtask in taskViewModel.task.subtasks)
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 20.0), // Indent the subtasks
                                 child: ListTile(
-                                  // title: Text(subtask.title),
-                                  title: Text('${subtask.title}'),
-                                  subtitle: Text(
+                                    // title: Text(subtask.title),
+                                    title: Text('${subtask.title}'),
+                                    subtitle: Text(
                                         'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                                  // Other properties of the subtask can be displayed here
-                                ),
+                                    // Other properties of the subtask can be displayed here
+                                    ),
                               ),
                           ]
-
-
-
-
                         ],
                       );
-                      
-
                     },
                   ),
                 ),
