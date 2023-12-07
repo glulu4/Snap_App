@@ -99,7 +99,8 @@ class _CalendarState extends State<Calendar> {
   void deleteTask(BuildContext context, Event event) {
     DateTime temp = event.dueDate;
     final viewModel = Provider.of<EventListViewModel>(context, listen: false);
-     final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
+    final combinedViewModel =
+        Provider.of<CombinedViewModel>(context, listen: false);
     viewModel.deleteEvent(event);
     combinedViewModel.updateSelectedDay(temp);
     Navigator.of(context).pop(); // Close the dialog
@@ -162,9 +163,9 @@ class _CalendarState extends State<Calendar> {
         ),
       ),
       onDaySelected: combinedViewModel.onDaySelected,
-        // WidgetsBinding.instance.addPostFrameCallback((_) {
-        // combinedViewModel.onDaySelected(selectedDay, focusedDay);
-        // });
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      // combinedViewModel.onDaySelected(selectedDay, focusedDay);
+      // });
       // },
       onRangeSelected: combinedViewModel.onRangeSelected,
       onFormatChanged: (format) {
@@ -263,26 +264,33 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _buildAddEventButton(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 192, 55, 45),
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CalendarView()),
-          );
-        },
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Add Event'),
-            Icon(Icons.add, size: 24),
-          ],
+    return Align(
+      alignment: Alignment.centerRight, // Aligns the button to the right
+      child: SizedBox(
+        width: 64,
+        height: 58,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CalendarView()),
+            );
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Text('Add Event'),
+              Icon(Icons.add),
+            ],
+          ),
         ),
       ),
     );
@@ -290,75 +298,75 @@ class _CalendarState extends State<Calendar> {
 }
 
 // view task details
-  void showTaskDetailsDialog(
-    BuildContext context,
-    TaskViewModel taskViewModel,
-  ) {
-    // pop up box of details
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(taskViewModel.title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  'Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+void showTaskDetailsDialog(
+  BuildContext context,
+  TaskViewModel taskViewModel,
+) {
+  // pop up box of details
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(taskViewModel.title),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'Due Date: ${DateFormat('yyyy-MM-dd').format(taskViewModel.dueDate)}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Category: ${taskViewModel.category}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text('Priority: ${taskViewModel.priority}'),
+              Text('Effort: ${taskViewModel.effort}'),
+              Text(
+                'Subtask',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
                 ),
-                Text(
-                  'Category: ${taskViewModel.category}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text('Priority: ${taskViewModel.priority}'),
-                Text('Effort: ${taskViewModel.effort}'),
-                Text(
-                  'Subtask',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
+              ),
+              if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                for (var subtask in taskViewModel.task.subtasks)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 5.0), // Indent the subtasks
+                    child: ListTile(
+                        // title: Text(subtask.title),
+                        title: Text(subtask.title,
+                            style: TextStyle(fontSize: 15.0)),
+                        subtitle: Text(
+                            'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
+                        // Other properties of the subtask can be displayed here
+                        ),
                   ),
-                ),
-                if (taskViewModel.task.subtasks.isNotEmpty) ...[
-                  for (var subtask in taskViewModel.task.subtasks)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 5.0), // Indent the subtasks
-                      child: ListTile(
-                          // title: Text(subtask.title),
-                          title: Text(subtask.title,
-                              style: TextStyle(fontSize: 15.0)),
-                          subtitle: Text(
-                              'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                          // Other properties of the subtask can be displayed here
-                          ),
-                    ),
-                ]
+              ]
 
-                // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
-              ],
-              // Displaying task details
-            ),
+              // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
+            ],
+            // Displaying task details
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Edit'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                navigateToEditTask(context, taskViewModel);
-              },
-            ),
-            TextButton(
-              child: Text('Delete'),
-              onPressed: () {
-                deleteTask(context, taskViewModel);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Edit'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              navigateToEditTask(context, taskViewModel);
+            },
+          ),
+          TextButton(
+            child: Text('Delete'),
+            onPressed: () {
+              deleteTask(context, taskViewModel);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
 // Function to handle task editing
 void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
@@ -377,7 +385,8 @@ void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
 void deleteTask(BuildContext context, TaskViewModel taskViewModel) {
   DateTime temp = taskViewModel.dueDate;
   final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
-  final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
+  final combinedViewModel =
+      Provider.of<CombinedViewModel>(context, listen: false);
   viewModel.deleteTask(taskViewModel);
   combinedViewModel.updateSelectedDay(temp);
   Navigator.of(context).pop(); // Close the dialog

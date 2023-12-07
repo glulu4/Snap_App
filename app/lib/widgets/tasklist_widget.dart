@@ -284,16 +284,20 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             right: 0,
             child: Padding(
               padding: const EdgeInsets.all(0.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TasklistView()),
-                  );
-                },
-                child: Icon(Icons.add),
-                backgroundColor: Color.fromARGB(255, 192, 55, 45),
-                foregroundColor: Colors.white,
+              child: Container(
+                width: 64,
+                height: 58,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TasklistView()),
+                    );
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                ),
               ),
             ),
           ),
