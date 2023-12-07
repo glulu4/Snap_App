@@ -60,31 +60,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 ),
                 Text('Priority: ${taskViewModel.priority}'),
                 Text('Effort: ${taskViewModel.effort}'),
-                Text(
-                  'Subtask',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                if (taskViewModel.task.subtasks.isNotEmpty) ...[
-                  for (var subtask in taskViewModel.task.subtasks)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 5.0), // Indent the subtasks
-                      child: ListTile(
-                          // title: Text(subtask.title),
-                          title: Text(subtask.title,
-                              style: TextStyle(fontSize: 15.0)),
-                          subtitle: Text(
-                              'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                          // Other properties of the subtask can be displayed here
-                          ),
-                    ),
-                ]
+                // Text(
+                //   'Subtask',
+                //   style: TextStyle(
+                //     decoration: TextDecoration.underline,
+                //   ),
+                // ),
 
-                // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
               ],
-              // Displaying task details
             ),
           ),
           actions: <Widget>[
@@ -213,9 +196,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                   itemCount: viewModel.tasks.length,
                   itemBuilder: (context, index) {
                     final taskViewModel = viewModel.tasks[index];
-                    // print(
-                    //     'Task: ${taskViewModel.title}, Subtasks: ${taskViewModel.task.subtasks.length}');
-                    // print(taskViewModel.toString());
+
 
                     return Column(
                       children: [
@@ -256,20 +237,20 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                             },
                           ),
                         ),
-                        if (taskViewModel.task.subtasks.isNotEmpty) ...[
-                          for (var subtask in taskViewModel.task.subtasks)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0), // Indent the subtasks
-                              child: ListTile(
-                                  // title: Text(subtask.title),
-                                  title: Text('${subtask.title}'),
-                                  subtitle: Text(
-                                      'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                                  // Other properties of the subtask can be displayed here
-                                  ),
-                            ),
-                        ]
+                        // if (taskViewModel.task.subtasks.isNotEmpty) ...[
+                        //   for (var subtask in taskViewModel.task.subtasks)
+                        //     Padding(
+                        //       padding: const EdgeInsets.only(
+                        //           left: 20.0), // Indent the subtasks
+                        //       child: ListTile(
+                        //           // title: Text(subtask.title),
+                        //           title: Text('${subtask.title}'),
+                        //           subtitle: Text(
+                        //               'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
+                        //           // Other properties of the subtask can be displayed here
+                        //           ),
+                        //     ),
+                        // ]
                       ],
                     );
                   },

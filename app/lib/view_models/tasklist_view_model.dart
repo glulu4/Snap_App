@@ -39,7 +39,7 @@ class TaskListViewModel extends ChangeNotifier {
             isCompleted: updatedTask.isCompleted,
             priority: updatedTask.priority,
             effort: updatedTask.effort,
-            subtasks: updatedTask.subtasks,
+            // subtasks: updatedTask.subtasks,
           );
 
       _tasks[index] = TaskViewModel(task: updatedModel);
