@@ -82,27 +82,19 @@ class _MyAppBarState extends State<MyAppBar> {
           ? null // If can pop, let Flutter handle the back button
 
           : InkWell(
-              onTap: () {
-                // Your action here
-              },
-              child: Container(
-                width: 60, // Set your width and height to the desired size
-                height: 60,
-                decoration: BoxDecoration(
-                    // Add your decoration as needed
-                    ),
-                child: Center(
-                  child:
-                      Icon('SnapIcon.png', size: 50.0), // Adjust the size here
-                ),
+              onTap: () {},
+              child: Image(
+                image: AssetImage('SnapIcon.png'),
+                width: 900,
+                fit: BoxFit.cover,
               ),
             ),
-
       actions: [
         IconButton(
           onPressed: () {},
           icon: Icon(
             Icons.menu,
+            color: Colors.white,
           ),
         ),
         IconButton(
@@ -113,10 +105,12 @@ class _MyAppBarState extends State<MyAppBar> {
                     .now()); // Adjust DateTime.now() to the date you want to filter by
           },
           icon: Icon(Icons.assignment, size: 40.0),
+          color: Colors.white,
         ),
         IconButton(
           onPressed: () {},
           icon: Icon(Icons.access_time_filled_rounded, size: 40.0),
+          color: Colors.white,
         ),
       ],
     );

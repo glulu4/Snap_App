@@ -16,7 +16,6 @@ class TaskListViewModel extends ChangeNotifier {
   // add task to list
   void addTask(TaskViewModel task) {
     _tasks.add(task);
-    
     saveTasksToPreferences();
     notifyListeners();
   }
@@ -56,7 +55,6 @@ class TaskListViewModel extends ChangeNotifier {
 
   // save tasks to local storage
   Future<void> saveTasksToPreferences() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tasksString = _tasks
         .map((taskViewModel) => json.encode(taskViewModel.task.toJson()))

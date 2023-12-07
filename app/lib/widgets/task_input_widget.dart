@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 class TaskInputWidget extends StatefulWidget {
   final bool isEditMode; // to determine if it's edit mode
   final TaskViewModel? initialTaskViewModel; // the task to be edited, if in edit mode
-//  final Event? initialEvent; // the event to be edited, if in edit mode
 
   TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
 
@@ -31,7 +30,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   final categoryController = TextEditingController();
   final subtaskTitleController = TextEditingController();
   final subtaskDueDateController = TextEditingController();
-  // Color _selectedColor = Colors.blue;
 
   @override
   void dispose() {
@@ -69,8 +67,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     setState(() {
       priority = null;
       effort = null;
-      // subtasks.clear();
       isAddingSubtask = false;
+      // subtasks.clear();
     });
   }
 
@@ -114,6 +112,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
           subtasks: subtasks, // Update with the current list of subtasks
         );
         viewModel.editTask(TaskViewModel(task: updatedTask));
+        combinedViewModel.updateSelectedDay(updatedTask.dueDate);
       } else {
         // Creating a new task
         final task = Task(
@@ -264,9 +263,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   
   // form for task input
   Widget _buildTaskInputFields() {
-    // Category? selectedCategory;
-    // final categoryViewModel =
-    //     Provider.of<CategoryListViewModel>(context, listen: false);
     return Column(
       children: [
         TaskUtils.createTextFormField(
