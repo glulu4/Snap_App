@@ -10,8 +10,7 @@ import 'package:intl/intl.dart';
 
 class TaskInputWidget extends StatefulWidget {
   final bool isEditMode; // to determine if it's edit mode
-  final TaskViewModel?
-      initialTaskViewModel; // the task to be edited, if in edit mode
+  final TaskViewModel? initialTaskViewModel; // the task to be edited, if in edit mode
 //  final Event? initialEvent; // the event to be edited, if in edit mode
 
   TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
@@ -30,8 +29,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   final titleController = TextEditingController();
   final dueDateController = TextEditingController();
   final categoryController = TextEditingController();
-  // final subtaskTitleController = TextEditingController();
-  // final subtaskDueDateController = TextEditingController();
+  final subtaskTitleController = TextEditingController();
+  final subtaskDueDateController = TextEditingController();
   // Color _selectedColor = Colors.blue;
 
   @override
@@ -72,7 +71,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       priority = null;
       effort = null;
       // subtasks.clear();
-      // isAddingSubtask = false;
+      isAddingSubtask = false;
     });
   }
 
@@ -124,6 +123,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
         combinedViewModel.updateSelectedDay(updatedTask.dueDate);
 
         Navigator.of(context).pop();
+        viewModel.editTask(TaskViewModel(task: updatedTask));
+        combinedViewModel.updateSelectedDay(updatedTask.dueDate);
       } else {
         final task = Task(
           id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
@@ -218,9 +219,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
 
   // form for task input
   Widget _buildTaskInputFields() {
-    // Category? selectedCategory;
-    // final categoryViewModel =
-    //     Provider.of<CategoryListViewModel>(context, listen: false);
     return Column(
       children: [
         TaskUtils.createTextFormField(

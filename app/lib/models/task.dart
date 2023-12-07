@@ -33,7 +33,6 @@ class Task {
         //     .map((subtask) => subtask.toJson())
         //     .toList(), // Serialize each subtask
         'effort': effort,
-        // 'eventId': eventId,
       };
 
   factory Task.fromJson(Map<String, dynamic> json) {

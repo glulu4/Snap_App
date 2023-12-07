@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
 class TaskListWidget extends StatefulWidget {
   @override
   _TaskListWidgetState createState() => _TaskListWidgetState();
@@ -164,8 +163,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 ),
                 child: AppBar(
                   backgroundColor: const Color.fromRGBO(102, 136, 255, 0.83),
-                  title: const Text(
-                    'Tasks'),
+                  title: const Text('Tasks'),
                   automaticallyImplyLeading: false,
                   titleTextStyle: const TextStyle(
                     color: Colors.white,
@@ -220,9 +218,22 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(taskViewModel.title),
+                          title: Text(
+                            taskViewModel.title,
+                            style: TextStyle(
+                              decoration: taskViewModel.isCompleted
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
+                          ),
                           subtitle: Text(
-                              'Due: ${DateFormat.yMMMd().format(taskViewModel.dueDate)}'),
+                            'Due: ${DateFormat.yMMMd().format(taskViewModel.dueDate)}',
+                            style: TextStyle(
+                              decoration: taskViewModel.isCompleted
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
+                          ),
                           onTap: () =>
                               showTaskDetailsDialog(context, taskViewModel),
                           trailing: Checkbox(
@@ -238,7 +249,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
 
                               // update the task in the viewModel
                               viewModel.editTask(updatedTaskViewModel);
-                              combinedViewModel.updateSelectedDay(updatedTask.dueDate);
+                              combinedViewModel
+                                  .updateSelectedDay(updatedTask.dueDate);
                             },
                           ),
                         ),

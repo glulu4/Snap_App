@@ -89,7 +89,6 @@ class _MyAppBarState extends State<MyAppBar> {
                 fit: BoxFit.cover,
               ),
             ),
-
       actions: [
         IconButton(
           onPressed: () {},
