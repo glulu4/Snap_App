@@ -1,9 +1,11 @@
+import 'package:app/view_models/combined_view_model.dart';
+import 'package:app/view_models/eventlist_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
 import 'package:app/views/tasklist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'views/home_page_view.dart'; 
-import 'views/calendar_view.dart'; 
+import 'views/home_page_view.dart';
+import 'views/calendar_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,8 +15,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TaskListViewModel(),
+    return 
+        MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TaskListViewModel()),
+        ChangeNotifierProvider(create: (_) => EventListViewModel()),
+        ChangeNotifierProxyProvider2<TaskListViewModel, EventListViewModel, CombinedViewModel>(
+          create: (_) => CombinedViewModel(),
+          update: (_, taskListViewModel, eventListViewModel, combinedViewModel) =>
+              combinedViewModel!..updateViewModels(taskListViewModel, eventListViewModel),
+        ),
+      ],
       child: MaterialApp(
         title: 'Snap App',
         theme: ThemeData(

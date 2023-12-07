@@ -1,7 +1,7 @@
 import 'package:app/models/task.dart';
 
 class TaskViewModel {
-  final Task task;
+  late final Task task;
 
   TaskViewModel({required this.task});
 
@@ -45,4 +45,8 @@ class TaskViewModel {
   int get id {
     return this.task.id;
   }
+
+  // int? get eventId {
+  //   return this.task.eventId;
+  // }
 }

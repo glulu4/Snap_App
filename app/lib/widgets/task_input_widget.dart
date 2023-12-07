@@ -1,17 +1,17 @@
+import 'package:app/view_models/combined_view_model.dart';
+import 'package:app/view_models/eventlist_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/models/task.dart';
 import 'package:app/task_utils.dart';
 import 'package:app/view_models/task_view_model.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class TaskInputWidget extends StatefulWidget {
   final bool isEditMode; // to determine if it's edit mode
-  final TaskViewModel?
-      initialTaskViewModel; // the task to be edited, if in edit mode
+  final TaskViewModel? initialTaskViewModel; // the task to be edited, if in edit mode
+//  final Event? initialEvent; // the event to be edited, if in edit mode
 
   TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
 
@@ -31,6 +31,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   final categoryController = TextEditingController();
   final subtaskTitleController = TextEditingController();
   final subtaskDueDateController = TextEditingController();
+  // Color _selectedColor = Colors.blue;
 
   @override
   void dispose() {
@@ -51,7 +52,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       dueDateController.text = DateFormat('yyyy-MM-dd')
           .format(widget.initialTaskViewModel!.dueDate)
           .toString();
-      categoryController.text = widget.initialTaskViewModel!.category;
+      categoryController.text = widget.initialTaskViewModel!.category.toString();
       priority = widget.initialTaskViewModel!.priority;
       effort = widget.initialTaskViewModel!.effort;
     }
@@ -97,26 +98,32 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     if (_formKey.currentState!.validate()) {
       print('Submitting with subtasks: ${subtasks.length}');
       final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
-
+      final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
       if (widget.isEditMode) {
+        
         // Handle task edit logic here
         // create a new Task instance with updated values
         Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
-          category: categoryController.text,
+          category:categoryController.text,
           priority: priority ?? 1,
           effort: effort ?? 1,
           subtasks: subtasks,
+          // event: event,
         );
+
+
+        
 
         // update the task in the viewModel
         Provider.of<TaskListViewModel>(context, listen: false)
             .editTask(TaskViewModel(task: updatedTask));
 
+        combinedViewModel.updateSelectedDay(updatedTask.dueDate);
+
         Navigator.of(context).pop();
       } else {
-        // Your existing task add logic
         final task = Task(
           id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
           title: titleController.text,
@@ -128,7 +135,9 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
           subtasks: subtasks,
         );
 
+
         viewModel.addTask(TaskViewModel(task: task));
+        combinedViewModel.updateSelectedDay(task.dueDate);
       }
       _clearFormFields();
       // reset priority and effort
@@ -207,8 +216,12 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     );
   }
 
-  // form for task input 
+  
+  // form for task input
   Widget _buildTaskInputFields() {
+    // Category? selectedCategory;
+    // final categoryViewModel =
+    //     Provider.of<CategoryListViewModel>(context, listen: false);
     return Column(
       children: [
         TaskUtils.createTextFormField(
@@ -295,8 +308,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
           for (var subtask in subtasks)
             ListTile(
               title: Text(subtask.title),
-              
-              subtitle: Text('Due Date: ${DateFormat('yyyy-MM-dd').format(subtask.dueDate)}'),
+              subtitle: Text(
+                  'Due Date: ${DateFormat('yyyy-MM-dd').format(subtask.dueDate)}'),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {

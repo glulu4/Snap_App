@@ -8,7 +8,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
-      
       body: Row(
         children: [
           Align(
@@ -18,7 +17,7 @@ class HomePage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.03,
-                  vertical: MediaQuery.of(context).size.height * 0.05),
+                  vertical: MediaQuery.of(context).size.height * 0.03),
               child: TaskListWidget(),
             ),
           ),

@@ -95,6 +95,7 @@ class _MyAppBarState extends State<MyAppBar> {
           onPressed: () {},
           icon: Icon(
             Icons.menu,
+            color: Colors.white,
           ),
         ),
         IconButton(
@@ -105,10 +106,12 @@ class _MyAppBarState extends State<MyAppBar> {
                     .now()); // Adjust DateTime.now() to the date you want to filter by
           },
           icon: Icon(Icons.assignment, size: 40.0),
+          color: Colors.white,
         ),
         IconButton(
           onPressed: () {},
           icon: Icon(Icons.access_time_filled_rounded, size: 40.0),
+          color: Colors.white,
         ),
       ],
     );

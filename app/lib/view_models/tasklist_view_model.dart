@@ -4,14 +4,19 @@ import 'package:app/models/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:table_calendar/table_calendar.dart';
+
+
 class TaskListViewModel extends ChangeNotifier {
   List<TaskViewModel> _tasks = <TaskViewModel>[];
-
   List<TaskViewModel> get tasks => _tasks;
+
+
 
   // add task to list
   void addTask(TaskViewModel task) {
     _tasks.add(task);
+    
     saveTasksToPreferences();
     notifyListeners();
   }
@@ -35,15 +40,19 @@ class TaskListViewModel extends ChangeNotifier {
             isCompleted: updatedTask.isCompleted,
             priority: updatedTask.priority,
             effort: updatedTask.effort,
-            subtasks: updatedTask.subtasks, // Now updating subtask as well
+            subtasks: updatedTask.subtasks,
           );
 
       _tasks[index] = TaskViewModel(task: updatedModel);
-
       saveTasksToPreferences();
       notifyListeners();
     }
   }
+
+  List<TaskViewModel> getTasksForDay(DateTime day) {
+  return _tasks.where((taskViewModel) => isSameDay(taskViewModel.task.dueDate, day)).toList();
+}
+
 
   // save tasks to local storage
   Future<void> saveTasksToPreferences() async {

@@ -1,3 +1,4 @@
+
 class Task {
   final int id;
   String title;
@@ -7,6 +8,7 @@ class Task {
   int priority;
   List<Task> subtasks; // Changed to a list
   int effort;
+  // int? eventId;
 
   Task({
     required this.id,
@@ -17,6 +19,7 @@ class Task {
     required this.priority,
     List<Task>? subtasks, // Optional parameter
     required this.effort,
+    // int? eventId,
   }) : subtasks = subtasks ?? []; // Initialize if null
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +33,7 @@ class Task {
             .map((subtask) => subtask.toJson())
             .toList(), // Serialize each subtask
         'effort': effort,
+        // 'eventId': eventId,
       };
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -51,6 +55,7 @@ class Task {
       priority: json["priority"],
       subtasks: subtasks, // Now correctly typed as List<Task>
       effort: json["effort"],
+      // eventId: json["eventId"],
     );
   }
 
@@ -64,6 +69,7 @@ class Task {
     int? priority,
     List<Task>? subtasks,
     int? effort,
+    // int? eventId,
   }) {
     return Task(
       id: id ?? this.id,
@@ -74,6 +80,7 @@ class Task {
       priority: priority ?? this.priority,
       subtasks: subtasks ?? this.subtasks,
       effort: effort ?? this.effort,
+      // eventId: eventId ?? this.effort,
     );
   }
 }
