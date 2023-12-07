@@ -46,6 +46,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   @override
   void initState() {
     super.initState();
+
     if (widget.isEditMode && widget.initialTaskViewModel != null) {
       // Initialize fields with the existing task data
       titleController.text = widget.initialTaskViewModel!.title;
@@ -55,6 +56,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       categoryController.text = widget.initialTaskViewModel!.category.toString();
       priority = widget.initialTaskViewModel!.priority;
       effort = widget.initialTaskViewModel!.effort;
+      subtasks = List.from(widget.initialTaskViewModel!.subtasks);
     }
   }
 
@@ -94,61 +96,104 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     }
   }
 
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      print('Submitting with subtasks: ${subtasks.length}');
       final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
-      final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
-      if (widget.isEditMode) {
-        
-        // Handle task edit logic here
-        // create a new Task instance with updated values
+      final combinedViewModel =
+          Provider.of<CombinedViewModel>(context, listen: false);
+
+      if (widget.isEditMode && widget.initialTaskViewModel != null) {
+        // Editing an existing task
         Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
-          category:categoryController.text,
+          category: categoryController.text,
           priority: priority ?? 1,
           effort: effort ?? 1,
-          subtasks: subtasks,
-          // event: event,
+          subtasks: subtasks, // Update with the current list of subtasks
         );
-
-
-        
-
-        // update the task in the viewModel
-        Provider.of<TaskListViewModel>(context, listen: false)
-            .editTask(TaskViewModel(task: updatedTask));
-
-        combinedViewModel.updateSelectedDay(updatedTask.dueDate);
-
-        Navigator.of(context).pop();
+        viewModel.editTask(TaskViewModel(task: updatedTask));
       } else {
+        // Creating a new task
         final task = Task(
-          id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
+          id: DateTime.now().millisecondsSinceEpoch,
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
           category: categoryController.text,
           priority: priority ?? 1,
           effort: effort ?? 1,
           isCompleted: false,
-          subtasks: subtasks,
+          subtasks: subtasks, // Include the current list of subtasks
         );
-
-
         viewModel.addTask(TaskViewModel(task: task));
-        combinedViewModel.updateSelectedDay(task.dueDate);
       }
+
+      combinedViewModel
+          .updateSelectedDay(DateTime.parse(dueDateController.text));
+      // Navigator.of(context).pop();
       _clearFormFields();
-      // reset priority and effort
-      setState(() {
-        priority = null;
-        effort = null;
-      });
     } else {
       print('Form is not valid');
     }
   }
+
+
+  // void _submitForm() {
+  //   if (_formKey.currentState!.validate()) {
+  //     print('Submitting with subtasks: ${subtasks.length}');
+  //     final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
+  //     final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
+  //     if (widget.isEditMode) {
+        
+  //       // Handle task edit logic here
+  //       // create a new Task instance with updated values
+  //       Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
+  //         title: titleController.text,
+  //         dueDate: DateTime.parse(dueDateController.text),
+  //         category:categoryController.text,
+  //         priority: priority ?? 1,
+  //         effort: effort ?? 1,
+  //         subtasks: subtasks,
+  //         // event: event,
+  //       );
+
+
+        
+
+  //       // update the task in the viewModel
+  //       Provider.of<TaskListViewModel>(context, listen: false)
+  //           .editTask(TaskViewModel(task: updatedTask));
+
+  //       combinedViewModel.updateSelectedDay(updatedTask.dueDate);
+
+  //       Navigator.of(context).pop();
+  //     } else {
+  //       final task = Task(
+  //         id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
+  //         title: titleController.text,
+  //         dueDate: DateTime.parse(dueDateController.text),
+  //         category: categoryController.text,
+  //         priority: priority ?? 1,
+  //         effort: effort ?? 1,
+  //         isCompleted: false,
+  //         subtasks: subtasks,
+  //       );
+
+
+  //       viewModel.addTask(TaskViewModel(task: task));
+  //       combinedViewModel.updateSelectedDay(task.dueDate);
+  //     }
+  //     _clearFormFields();
+  //     // reset priority and effort
+  //     setState(() {
+  //       priority = null;
+  //       effort = null;
+  //     });
+  //   } else {
+  //     print('Form is not valid');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
