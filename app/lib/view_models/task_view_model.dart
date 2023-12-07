@@ -29,9 +29,9 @@ class TaskViewModel {
     return this.task.priority;
   }
 
-  List<Task> get subtasks {
-    return this.task.subtasks;
-  }
+  // List<Task> get subtasks {
+  //   return this.task.subtasks;
+  // }
 
   // Optional: Add a setter for subtask if you want to modify it
   // void set subtask(Task? newSubtask) {

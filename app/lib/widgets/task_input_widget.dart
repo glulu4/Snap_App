@@ -10,7 +10,8 @@ import 'package:intl/intl.dart';
 
 class TaskInputWidget extends StatefulWidget {
   final bool isEditMode; // to determine if it's edit mode
-  final TaskViewModel? initialTaskViewModel; // the task to be edited, if in edit mode
+  final TaskViewModel?
+      initialTaskViewModel; // the task to be edited, if in edit mode
 //  final Event? initialEvent; // the event to be edited, if in edit mode
 
   TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
@@ -23,14 +24,14 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   int? priority;
   int? effort;
   bool isAddingSubtask = false;
-  List<Task> subtasks = [];
+  // List<Task> subtasks = [];
   final List<int> options = [1, 2, 3];
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final dueDateController = TextEditingController();
   final categoryController = TextEditingController();
-  final subtaskTitleController = TextEditingController();
-  final subtaskDueDateController = TextEditingController();
+  // final subtaskTitleController = TextEditingController();
+  // final subtaskDueDateController = TextEditingController();
   // Color _selectedColor = Colors.blue;
 
   @override
@@ -38,8 +39,8 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     titleController.dispose();
     dueDateController.dispose();
     categoryController.dispose();
-    subtaskTitleController.dispose();
-    subtaskDueDateController.dispose();
+    // subtaskTitleController.dispose();
+    // subtaskDueDateController.dispose();
     super.dispose();
   }
 
@@ -53,10 +54,11 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
       dueDateController.text = DateFormat('yyyy-MM-dd')
           .format(widget.initialTaskViewModel!.dueDate)
           .toString();
-      categoryController.text = widget.initialTaskViewModel!.category.toString();
+      categoryController.text =
+          widget.initialTaskViewModel!.category.toString();
       priority = widget.initialTaskViewModel!.priority;
       effort = widget.initialTaskViewModel!.effort;
-      subtasks = List.from(widget.initialTaskViewModel!.subtasks);
+      // subtasks = List.from(widget.initialTaskViewModel!.subtasks);
     }
   }
 
@@ -64,136 +66,89 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     titleController.clear();
     dueDateController.clear();
     categoryController.clear();
-    subtaskTitleController.clear();
-    subtaskDueDateController.clear();
+    // subtaskTitleController.clear();
+    // subtaskDueDateController.clear();
     setState(() {
       priority = null;
       effort = null;
       // subtasks.clear();
-      isAddingSubtask = false;
+      // isAddingSubtask = false;
     });
   }
 
-  void _addSubtask() {
-    if (_formKey.currentState!.validate()) {
-      final subtask = Task(       
-        id: DateTime.now().millisecondsSinceEpoch,
-        title: subtaskTitleController.text,
-        dueDate: DateTime.parse(subtaskDueDateController.text),
-        category: categoryController.text,
-        priority: priority ?? 1,
-        effort: effort ?? 1,
-        isCompleted: false,
-      );
+  // void _addSubtask() {
+  //   if (_formKey.currentState!.validate()) {
+  //     final subtask = Task(
+  //       id: DateTime.now().millisecondsSinceEpoch,
+  //       title: subtaskTitleController.text,
+  //       dueDate: DateTime.parse(subtaskDueDateController.text),
+  //       category: categoryController.text,
+  //       priority: priority ?? 1,
+  //       effort: effort ?? 1,
+  //       isCompleted: false,
+  //     );
 
-      setState(() {
-       
-        subtasks.add(subtask);
-        subtaskTitleController.clear();
-        subtaskDueDateController.clear();
-         print('Added subtask. Current count: ${subtasks.length}');
-      });
-    }
-  }
+  //     setState(() {
+  //       subtasks.add(subtask);
+  //       subtaskTitleController.clear();
+  //       subtaskDueDateController.clear();
+  //     });
+  //   }
+  // }
+
 
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // print('Submitting with subtasks: ${subtasks.length}');
       final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
-      final combinedViewModel =
-          Provider.of<CombinedViewModel>(context, listen: false);
+      final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
+      if (widget.isEditMode) {
 
-      if (widget.isEditMode && widget.initialTaskViewModel != null) {
-        // Editing an existing task
+        // Handle task edit logic here
+        // create a new Task instance with updated values
         Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
-          category: categoryController.text,
+          category:categoryController.text,
           priority: priority ?? 1,
           effort: effort ?? 1,
-          subtasks: subtasks, // Update with the current list of subtasks
+          // subtasks: subtasks,
+          // event: event,
         );
-        viewModel.editTask(TaskViewModel(task: updatedTask));
+
+        // update the task in the viewModel
+        Provider.of<TaskListViewModel>(context, listen: false)
+            .editTask(TaskViewModel(task: updatedTask));
+
+        combinedViewModel.updateSelectedDay(updatedTask.dueDate);
+
+        Navigator.of(context).pop();
       } else {
-        // Creating a new task
         final task = Task(
-          id: DateTime.now().millisecondsSinceEpoch,
+          id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
           category: categoryController.text,
           priority: priority ?? 1,
           effort: effort ?? 1,
           isCompleted: false,
-          subtasks: subtasks, // Include the current list of subtasks
+          // subtasks: subtasks,
         );
-        viewModel.addTask(TaskViewModel(task: task));
-      }
 
-      combinedViewModel
-          .updateSelectedDay(DateTime.parse(dueDateController.text));
-      // Navigator.of(context).pop();
+        viewModel.addTask(TaskViewModel(task: task));
+        combinedViewModel.updateSelectedDay(task.dueDate);
+      }
       _clearFormFields();
+      // reset priority and effort
+      setState(() {
+        priority = null;
+        effort = null;
+      });
     } else {
       print('Form is not valid');
     }
   }
-
-
-  // void _submitForm() {
-  //   if (_formKey.currentState!.validate()) {
-  //     print('Submitting with subtasks: ${subtasks.length}');
-  //     final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
-  //     final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
-  //     if (widget.isEditMode) {
-        
-  //       // Handle task edit logic here
-  //       // create a new Task instance with updated values
-  //       Task updatedTask = widget.initialTaskViewModel!.task.copyWith(
-  //         title: titleController.text,
-  //         dueDate: DateTime.parse(dueDateController.text),
-  //         category:categoryController.text,
-  //         priority: priority ?? 1,
-  //         effort: effort ?? 1,
-  //         subtasks: subtasks,
-  //         // event: event,
-  //       );
-
-
-        
-
-  //       // update the task in the viewModel
-  //       Provider.of<TaskListViewModel>(context, listen: false)
-  //           .editTask(TaskViewModel(task: updatedTask));
-
-  //       combinedViewModel.updateSelectedDay(updatedTask.dueDate);
-
-  //       Navigator.of(context).pop();
-  //     } else {
-  //       final task = Task(
-  //         id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
-  //         title: titleController.text,
-  //         dueDate: DateTime.parse(dueDateController.text),
-  //         category: categoryController.text,
-  //         priority: priority ?? 1,
-  //         effort: effort ?? 1,
-  //         isCompleted: false,
-  //         subtasks: subtasks,
-  //       );
-
-
-  //       viewModel.addTask(TaskViewModel(task: task));
-  //       combinedViewModel.updateSelectedDay(task.dueDate);
-  //     }
-  //     _clearFormFields();
-  //     // reset priority and effort
-  //     setState(() {
-  //       priority = null;
-  //       effort = null;
-  //     });
-  //   } else {
-  //     print('Form is not valid');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +175,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                 children: [
                   _buildTaskInputFields(),
                   const SizedBox(height: 20),
-                  if (isAddingSubtask) _buildSubtaskInputFields(),
+                  
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -236,21 +191,21 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
                           child: Text(buttonText),
                         ),
                         const SizedBox(height: 20),
-                        if (!isAddingSubtask && !widget.isEditMode)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 20),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isAddingSubtask = true;
-                              });
-                            },
-                            child: const Text('Add Sub-Task'),
-                          ),
+                        // if (!isAddingSubtask && !widget.isEditMode)
+                        //   ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       backgroundColor: Colors.black,
+                        //       foregroundColor: Colors.white,
+                        //       padding: EdgeInsets.symmetric(
+                        //           vertical: 20, horizontal: 20),
+                        //     ),
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         isAddingSubtask = true;
+                        //       });
+                        //     },
+                        //     child: const Text('Add Sub-Task'),
+                        //   ),
                       ]),
                 ],
               ),
@@ -261,7 +216,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
     );
   }
 
-  
   // form for task input
   Widget _buildTaskInputFields() {
     // Category? selectedCategory;
@@ -314,58 +268,58 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   }
 
   // subtask form inputs
-  Widget _buildSubtaskInputFields() {
-    return Padding(
-      padding: EdgeInsets.only(left: 30.0, top: 30.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                onPressed: _addSubtask,
-                icon: Icon(Icons.add),
-              ),
-              IconButton(
-                onPressed: () => setState(() => isAddingSubtask = false),
-                icon: Icon(Icons.close),
-              ),
-            ],
-          ),
-          TaskUtils.createTextFormField(
-              controller: subtaskTitleController,
-              labelText: 'Subtask Name',
-              validator: (value) => value == null || value.isEmpty
-                  ? 'Please enter a subtask name'
-                  : null),
-          const SizedBox(height: 20),
-          TaskUtils.createTextFormField(
-              controller: subtaskDueDateController,
-              labelText: 'Subtask Due Date',
-              readOnly: true,
-              onTap: () =>
-                  TaskUtils.selectDate(context, subtaskDueDateController, null),
-              validator: (value) => value == null || value.isEmpty
-                  ? 'Please enter a subtask due date'
-                  : null),
-          const SizedBox(height: 20),
-          for (var subtask in subtasks)
-            ListTile(
-              title: Text(subtask.title),
-              subtitle: Text(
-                  'Due Date: ${DateFormat('yyyy-MM-dd').format(subtask.dueDate)}'),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                    subtasks.remove(subtask);
-                  });
-                },
-              ),
-            ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildSubtaskInputFields() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(left: 30.0, top: 30.0),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           children: [
+  //             IconButton(
+  //               onPressed: _addSubtask,
+  //               icon: Icon(Icons.add),
+  //             ),
+  //             IconButton(
+  //               onPressed: () => setState(() => isAddingSubtask = false),
+  //               icon: Icon(Icons.close),
+  //             ),
+  //           ],
+  //         ),
+  //         TaskUtils.createTextFormField(
+  //             controller: subtaskTitleController,
+  //             labelText: 'Subtask Name',
+  //             validator: (value) => value == null || value.isEmpty
+  //                 ? 'Please enter a subtask name'
+  //                 : null),
+  //         const SizedBox(height: 20),
+  //         TaskUtils.createTextFormField(
+  //             controller: subtaskDueDateController,
+  //             labelText: 'Subtask Due Date',
+  //             readOnly: true,
+  //             onTap: () =>
+  //                 TaskUtils.selectDate(context, subtaskDueDateController, null),
+  //             validator: (value) => value == null || value.isEmpty
+  //                 ? 'Please enter a subtask due date'
+  //                 : null),
+  //         const SizedBox(height: 20),
+  //         for (var subtask in subtasks)
+  //           ListTile(
+  //             title: Text(subtask.title),
+  //             subtitle: Text(
+  //                 'Due Date: ${DateFormat('yyyy-MM-dd').format(subtask.dueDate)}'),
+  //             trailing: IconButton(
+  //               icon: Icon(Icons.delete),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   subtasks.remove(subtask);
+  //                 });
+  //               },
+  //             ),
+  //           ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

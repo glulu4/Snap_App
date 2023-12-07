@@ -6,7 +6,7 @@ class Task {
   String category;
   bool isCompleted;
   int priority;
-  List<Task> subtasks; // Changed to a list
+  // List<Task> subtasks; // Changed to a list
   int effort;
   // int? eventId;
 
@@ -17,10 +17,10 @@ class Task {
     required this.category,
     required this.isCompleted,
     required this.priority,
-    List<Task>? subtasks, // Optional parameter
+    // List<Task>? subtasks, // Optional parameter
     required this.effort,
     // int? eventId,
-  }) : subtasks = subtasks ?? []; // Initialize if null
+  }); // Initialize if null
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -29,22 +29,22 @@ class Task {
         'dueDate': dueDate.toIso8601String(),
         'isCompleted': isCompleted,
         'priority': priority,
-        'subtasks': subtasks
-            .map((subtask) => subtask.toJson())
-            .toList(), // Serialize each subtask
+        // 'subtasks': subtasks
+        //     .map((subtask) => subtask.toJson())
+        //     .toList(), // Serialize each subtask
         'effort': effort,
         // 'eventId': eventId,
       };
 
   factory Task.fromJson(Map<String, dynamic> json) {
     // Extract 'subtasks' as a List<dynamic> if it's not null, else use an empty list
-    var subtasksFromJson = json['subtasks'] as List<dynamic>? ?? [];
+    // var subtasksFromJson = json['subtasks'] as List<dynamic>? ?? [];
 
-    // Convert each element in the list from dynamic to Task
-    var subtasks = subtasksFromJson.map((subtaskJson) {
-      // Ensure each element is a Map<String, dynamic> before calling Task.fromJson
-      return Task.fromJson(subtaskJson as Map<String, dynamic>);
-    }).toList();
+    // // Convert each element in the list from dynamic to Task
+    // var subtasks = subtasksFromJson.map((subtaskJson) {
+    //   // Ensure each element is a Map<String, dynamic> before calling Task.fromJson
+    //   return Task.fromJson(subtaskJson as Map<String, dynamic>);
+    // }).toList();
 
     return Task(
       id: json["id"],
@@ -53,7 +53,7 @@ class Task {
       category: json["category"],
       isCompleted: json["isCompleted"],
       priority: json["priority"],
-      subtasks: subtasks, // Now correctly typed as List<Task>
+      // subtasks: subtasks, // Now correctly typed as List<Task>
       effort: json["effort"],
       // eventId: json["eventId"],
     );
@@ -78,7 +78,7 @@ class Task {
       category: category ?? this.category,
       isCompleted: isCompleted ?? this.isCompleted,
       priority: priority ?? this.priority,
-      subtasks: subtasks ?? this.subtasks,
+      // subtasks: subtasks ?? this.subtasks,
       effort: effort ?? this.effort,
       // eventId: eventId ?? this.effort,
     );
