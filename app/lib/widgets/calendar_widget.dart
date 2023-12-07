@@ -327,21 +327,21 @@ void showTaskDetailsDialog(
                   decoration: TextDecoration.underline,
                 ),
               ),
-              if (taskViewModel.task.subtasks.isNotEmpty) ...[
-                for (var subtask in taskViewModel.task.subtasks)
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5.0), // Indent the subtasks
-                    child: ListTile(
-                        // title: Text(subtask.title),
-                        title: Text(subtask.title,
-                            style: TextStyle(fontSize: 15.0)),
-                        subtitle: Text(
-                            'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-                        // Other properties of the subtask can be displayed here
-                        ),
-                  ),
-              ]
+              // if (taskViewModel.task.subtasks.isNotEmpty) ...[
+              //   for (var subtask in taskViewModel.task.subtasks)
+              //     Padding(
+              //       padding:
+              //           const EdgeInsets.only(left: 5.0), // Indent the subtasks
+              //       child: ListTile(
+              //           // title: Text(subtask.title),
+              //           title: Text(subtask.title,
+              //               style: TextStyle(fontSize: 15.0)),
+              //           subtitle: Text(
+              //               'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
+              //           // Other properties of the subtask can be displayed here
+              //           ),
+              //     ),
+              // ]
 
               // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
             ],
