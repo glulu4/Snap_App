@@ -58,22 +58,19 @@ class _CalendarState extends State<Calendar> {
                 if (event.location.isNotEmpty)
                   Text('Location: ${event.location}'),
               ],
-              // Displaying event details
-              // ...
             ),
           ),
           actions: <Widget>[
             TextButton(
               child: Text('Edit'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                navigateToEditEvent(context, event);
+                Navigator.of(context).pop(); 
               },
             ),
             TextButton(
               child: Text('Delete'),
               onPressed: () {
-                deleteTask(context, event);
+                deleteEvent(context, event);
               },
             ),
           ],
@@ -82,7 +79,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  // Function to handle event editing
+
   void navigateToEditEvent(BuildContext context, Event event) {
     Navigator.push(
       context,
@@ -95,19 +92,19 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  // Function to handle event deletion
-  void deleteTask(BuildContext context, Event event) {
+  
+  void deleteEvent(BuildContext context, Event event) {
     DateTime temp = event.dueDate;
     final viewModel = Provider.of<EventListViewModel>(context, listen: false);
     final combinedViewModel =
         Provider.of<CombinedViewModel>(context, listen: false);
     viewModel.deleteEvent(event);
     combinedViewModel.updateSelectedDay(temp);
-    Navigator.of(context).pop(); // Close the dialog
+    Navigator.of(context).pop(); 
   }
 
 // calendar widget
-  // @override
+   @override
   Widget build(BuildContext context) {
     final eventListViewModel = Provider.of<EventListViewModel>(context);
     final combinedViewModel = Provider.of<CombinedViewModel>(context);
@@ -154,19 +151,13 @@ class _CalendarState extends State<Calendar> {
         selectedDecoration: BoxDecoration(
           color: Color.fromRGBO(102, 136, 255, 0.83),
           shape: BoxShape.rectangle,
-          // borderRadius: BorderRadius.circular(5),
         ),
         todayDecoration: BoxDecoration(
           color: Colors.orange,
           shape: BoxShape.rectangle,
-          //  borderRadius: BorderRadius.circular(5),
         ),
       ),
       onDaySelected: combinedViewModel.onDaySelected,
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
-      // combinedViewModel.onDaySelected(selectedDay, focusedDay);
-      // });
-      // },
       onRangeSelected: combinedViewModel.onRangeSelected,
       onFormatChanged: (format) {
         if (combinedViewModel.calendarFormat != format) {
@@ -217,7 +208,6 @@ class _CalendarState extends State<Calendar> {
               // Render event
               return _buildEventListItem(context, viewModel, item);
             } else {
-              // Fallback for an unknown type
               return SizedBox.shrink();
             }
           },
@@ -227,7 +217,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _buildTaskListItem(BuildContext context, TaskViewModel taskViewModel) {
-    // Customize this widget to display task details
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       decoration: BoxDecoration(
@@ -239,8 +228,7 @@ class _CalendarState extends State<Calendar> {
         leading: Icon(Icons.task, color: Color.fromRGBO(234, 70, 20, 0.824)),
         title: Text(taskViewModel.task.title),
         subtitle: Text(taskViewModel.category),
-        trailing: Icon(Icons.arrow_forward_ios, size: 16), // Trailing icon
-        // Add other task details
+        trailing: Icon(Icons.arrow_forward_ios, size: 16),
       ),
     );
   }
@@ -257,15 +245,15 @@ class _CalendarState extends State<Calendar> {
         onTap: () => showEventDetailsDialog(context, viewModel, event),
         leading: Icon(Icons.event, color: Color.fromRGBO(20, 181, 234, 0.824)),
         title: Text(event.title),
-        subtitle: Text(event.category), // Subtitle for the date
-        trailing: Icon(Icons.arrow_forward_ios, size: 16), // Trailing icon
+        subtitle: Text(event.category), 
+        trailing: Icon(Icons.arrow_forward_ios, size: 16), 
       ),
     );
   }
 
   Widget _buildAddEventButton(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight, // Aligns the button to the right
+      alignment: Alignment.centerRight, 
       child: SizedBox(
         width: 64,
         height: 58,
@@ -287,7 +275,6 @@ class _CalendarState extends State<Calendar> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Text('Add Event'),
               Icon(Icons.add),
             ],
           ),
@@ -321,38 +308,37 @@ void showTaskDetailsDialog(
               ),
               Text('Priority: ${taskViewModel.priority}'),
               Text('Effort: ${taskViewModel.effort}'),
-              Text(
-                'Subtask',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                ),
-              ),
+              // Text(
+              //   'Subtask',
+              //   style: TextStyle(
+              //     decoration: TextDecoration.underline,
+              //   ),
+              // ),
               // if (taskViewModel.task.subtasks.isNotEmpty) ...[
               //   for (var subtask in taskViewModel.task.subtasks)
               //     Padding(
               //       padding:
-              //           const EdgeInsets.only(left: 5.0), // Indent the subtasks
+              //           const EdgeInsets.only(left: 5.0), 
               //       child: ListTile(
               //           // title: Text(subtask.title),
               //           title: Text(subtask.title,
               //               style: TextStyle(fontSize: 15.0)),
               //           subtitle: Text(
               //               'Due: ${DateFormat.yMMMd().format(subtask.dueDate)}')
-              //           // Other properties of the subtask can be displayed here
+              //         
               //           ),
               //     ),
               // ]
 
               // Text('Completed: ${taskViewModel.isCompleted ? 'Yes' : 'No'}'),
             ],
-            // Displaying task details
           ),
         ),
         actions: <Widget>[
           TextButton(
             child: Text('Edit'),
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop(); 
               navigateToEditTask(context, taskViewModel);
             },
           ),
@@ -368,7 +354,7 @@ void showTaskDetailsDialog(
   );
 }
 
-// Function to handle task editing
+
 void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
   Navigator.push(
     context,
@@ -381,7 +367,7 @@ void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
   );
 }
 
-// Function to handle task deletion
+
 void deleteTask(BuildContext context, TaskViewModel taskViewModel) {
   DateTime temp = taskViewModel.dueDate;
   final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
@@ -389,6 +375,5 @@ void deleteTask(BuildContext context, TaskViewModel taskViewModel) {
       Provider.of<CombinedViewModel>(context, listen: false);
   viewModel.deleteTask(taskViewModel);
   combinedViewModel.updateSelectedDay(temp);
-  Navigator.of(context).pop(); // Close the dialog
-  // Optionally, show a snackbar or other feedback to the user
+  Navigator.of(context).pop(); 
 }

@@ -33,7 +33,6 @@ class TaskViewModel {
   //   return this.task.subtasks;
   // }
 
-  // Optional: Add a setter for subtask if you want to modify it
   // void set subtask(Task? newSubtask) {
   //   task.subtask = newSubtask;
   // }
@@ -45,8 +44,4 @@ class TaskViewModel {
   int get id {
     return this.task.id;
   }
-
-  // int? get eventId {
-  //   return this.task.eventId;
-  // }
 }

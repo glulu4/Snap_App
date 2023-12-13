@@ -18,7 +18,6 @@ class TasklistView extends StatelessWidget {
       body: Row(
         children: [
           Container(
-            // height: MediaQuery.of(context).size.height * 0.8,
             width: MediaQuery.of(context).size.width * 0.5,
             padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.03,
@@ -30,7 +29,6 @@ class TasklistView extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              // height: MediaQuery.of(context).size.height * 0.8,
               width: MediaQuery.of(context).size.width * 0.5,
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.03,

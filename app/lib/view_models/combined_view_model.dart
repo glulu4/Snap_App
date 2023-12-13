@@ -23,7 +23,6 @@ class CombinedViewModel extends ChangeNotifier {
       TaskListViewModel taskListVM, EventListViewModel eventListVM) {
     _taskListViewModel = taskListVM;
     _eventListViewModel = eventListVM;
-    // Notify listeners if necessary, for example:
     notifyListeners();
   }
 
@@ -43,12 +42,10 @@ class CombinedViewModel extends ChangeNotifier {
     // Add tasks for the day
     items.addAll(_taskListViewModel.getTasksForDay(day));
 
-    // selectedItems.value = items;
     return items;
   }
 
   List<dynamic> getItemsForRange(DateTime start, DateTime end) {
-    // Implementation example
     final days = daysInRange(start, end);
     return [
       for (final d in days) getItemsForDay(d),
@@ -59,7 +56,7 @@ class CombinedViewModel extends ChangeNotifier {
     if (!isSameDay(selectedDay, pselectedDay)) {
       selectedDay = pselectedDay;
       focusedDay = focusedDay;
-      rangeStart = null; // Important to clean those
+      rangeStart = null; 
       rangeEnd = null;
       rangeSelectionMode = RangeSelectionMode.toggledOff;
       selectedItems.value = getItemsForDay(pselectedDay);
@@ -74,7 +71,6 @@ class CombinedViewModel extends ChangeNotifier {
     rangeEnd = end;
     rangeSelectionMode = RangeSelectionMode.toggledOn;
 
-    // `start` or `end` could be null
     if (start != null && end != null) {
       selectedItems.value = getItemsForRange(start, end);
     } else if (start != null) {

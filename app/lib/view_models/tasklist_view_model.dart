@@ -12,6 +12,45 @@ class TaskListViewModel extends ChangeNotifier {
   List<TaskViewModel> get tasks => _tasks;
 
 
+  List<TaskViewModel> getDueTasks(DateTime selectedDate, int numEvents) {
+  DateTime today = DateTime.now();
+  // Filter tasks that are due and sort them
+
+  int taskCount = 5 - numEvents;
+  taskCount > 0 ? taskCount : 0; // Ensure it's not negative
+
+  var dueTasks = tasks
+      .where((task) => ((DateTime(task.dueDate.year, task.dueDate.month,
+                task.dueDate.day) ==
+          DateTime(selectedDate.year, selectedDate.month, selectedDate.day)) || task.dueDate.isAfter(DateTime.now())))
+      .toList();
+
+  dueTasks.sort((a, b) {
+    int dateComparison = a.dueDate.compareTo(b.dueDate);
+    if (dateComparison != 0) return dateComparison;
+    int priorityComparison = b.priority.compareTo(a.priority);
+    if (priorityComparison != 0) return priorityComparison;
+    return b.effort.compareTo(a.effort);
+  });
+
+  return dueTasks.take(taskCount).toList(); // Take only the top 'maxTasks' tasks
+
+
+
+  // return _tasks
+  //     .where((task) => ((DateTime(task.dueDate.year, task.dueDate.month,
+  //               task.dueDate.day) ==
+  //         DateTime(selectedDate.year, selectedDate.month, selectedDate.day)) || task.dueDate.isAfter(today)))
+  //     .toList()
+  //     ..sort((a, b) {
+  //       int dateComparison = a.dueDate.compareTo(b.dueDate);
+  //       if (dateComparison != 0) return dateComparison;
+  //       int priorityComparison = b.priority.compareTo(a.priority);
+  //       if (priorityComparison != 0) return priorityComparison;
+  //       return b.effort.compareTo(a.effort);
+  //     });
+}
+
 
   // add task to list
   void addTask(TaskViewModel task) {

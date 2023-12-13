@@ -74,7 +74,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             TextButton(
               child: Text('Edit'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
                 navigateToEditTask(context, taskViewModel);
               },
             ),
@@ -90,7 +90,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     );
   }
 
-// Function to handle task editing
+
   void navigateToEditTask(BuildContext context, TaskViewModel taskViewModel) {
     Navigator.push(
       context,
@@ -103,7 +103,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     );
   }
 
-  // Function to handle task deletion
+  
   void deleteTask(BuildContext context, TaskViewModel taskViewModel) {
     DateTime temp = taskViewModel.dueDate;
     final viewModel = Provider.of<TaskListViewModel>(context, listen: false);
@@ -111,8 +111,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
         Provider.of<CombinedViewModel>(context, listen: false);
     viewModel.deleteTask(taskViewModel);
     combinedViewModel.updateSelectedDay(temp);
-    Navigator.of(context).pop(); // Close the dialog
-    // Optionally, show a snackbar or other feedback to the user
+    Navigator.of(context).pop(); 
   }
 
   // widget list component
@@ -135,7 +134,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
               ),
             ],
           ),
-          // width: 300,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -196,8 +194,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                   itemCount: viewModel.tasks.length,
                   itemBuilder: (context, index) {
                     final taskViewModel = viewModel.tasks[index];
-
-
                     return Column(
                       children: [
                         ListTile(

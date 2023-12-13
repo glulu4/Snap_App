@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 class TaskInputWidget extends StatefulWidget {
   final bool isEditMode; // to determine if it's edit mode
   final TaskViewModel? initialTaskViewModel; // the task to be edited, if in edit mode
-//  final Event? initialEvent; // the event to be edited, if in edit mode
 
   TaskInputWidget({this.isEditMode = false, this.initialTaskViewModel});
 
@@ -31,7 +30,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
   final categoryController = TextEditingController();
   final subtaskTitleController = TextEditingController();
   final subtaskDueDateController = TextEditingController();
-  // Color _selectedColor = Colors.blue;
 
   @override
   void dispose() {
@@ -113,7 +111,6 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
           priority: priority ?? 1,
           effort: effort ?? 1,
           // subtasks: subtasks,
-          // event: event,
         );
 
         // update the task in the viewModel
@@ -127,7 +124,7 @@ class _TaskInputWidgetState extends State<TaskInputWidget> {
         combinedViewModel.updateSelectedDay(updatedTask.dueDate);
       } else {
         final task = Task(
-          id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
+          id: DateTime.now().millisecondsSinceEpoch, 
           title: titleController.text,
           dueDate: DateTime.parse(dueDateController.text),
           category: categoryController.text,

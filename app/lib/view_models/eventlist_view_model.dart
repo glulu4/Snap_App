@@ -15,7 +15,6 @@ class EventListViewModel extends ChangeNotifier {
 
   // calendar specific functions
   List<Event> getEventsForDay(DateTime day) {
-    // Implementation example
     return events[day] ?? [];
   }
   
@@ -54,17 +53,16 @@ class EventListViewModel extends ChangeNotifier {
   Future<void> saveEventsToPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Create a list of maps, each containing the date and the corresponding events
     List<Map<String, dynamic>> eventEntries = [];
     events.forEach((date, eventsList) {
-      var dateString = date.toIso8601String(); // Convert DateTime to a string
+      var dateString = date.toIso8601String(); 
       var eventJsonList = eventsList
           .map((event) => event.toJson())
-          .toList(); // Convert each Event to JSON
+          .toList();
       eventEntries.add({"date": dateString, "events": eventJsonList});
     });
 
-    // Convert the entire structure to a JSON string
+   
     String serializedData = json.encode(eventEntries);
     await prefs.setString('events', serializedData);
   }

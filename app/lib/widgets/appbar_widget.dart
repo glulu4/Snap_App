@@ -1,4 +1,6 @@
 import 'dart:html';
+import 'package:app/models/task.dart';
+import 'package:app/view_models/eventlist_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/view_models/tasklist_view_model.dart';
 import 'package:intl/intl.dart';
@@ -15,17 +17,16 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _MyAppBarState extends State<MyAppBar> {
   void _showPopup(BuildContext context, DateTime selectedDate) {
-    // Access the TaskListViewModel from the provider
     final taskListViewModel =
         Provider.of<TaskListViewModel>(context, listen: false);
 
-    // Filter the tasks by the selected due date
-    List<TaskViewModel> tasksDueOnSelectedDate = taskListViewModel.tasks
-        .where((taskViewModel) =>
-            DateTime(taskViewModel.dueDate.year, taskViewModel.dueDate.month,
-                taskViewModel.dueDate.day) ==
-            DateTime(selectedDate.year, selectedDate.month, selectedDate.day))
-        .toList();
+  final eventListViewModel =
+          Provider.of<EventListViewModel>(context, listen: false);
+
+      int numEvents = eventListViewModel.getEventsForDay(selectedDate).length;
+
+   // Use the getDueTasks method to filter tasks
+    List<TaskViewModel> tasksDueOnSelectedDate = taskListViewModel.getDueTasks(selectedDate, numEvents);
 
     showDialog(
       context: context,
@@ -42,17 +43,27 @@ class _MyAppBarState extends State<MyAppBar> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                    'Tasks due on ${DateFormat('yyyy-MM-dd').format(selectedDate)}',
+                    'Agenda for ${DateFormat('yyyy-MM-dd').format(selectedDate)}',
                     style:
                         TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 SizedBox(height: 16),
+                // Display the numbered tasks due on the selected date
+                ...tasksDueOnSelectedDate.asMap().entries.map((entry) {
+                  int taskNumber = entry.key + 1; // Task number (starting from 1)
+                  TaskViewModel taskViewModel = entry.value;
+
+                  return ListTile(
+                    leading: Text('$taskNumber'), // Display the task number
+                    title: Text(taskViewModel.task.title ?? 'No Title'),
+                    subtitle: Text('Category: ${taskViewModel.category ?? 'No Category'}'),
+                  );
+                }).toList(),
                 // Display the tasks due on the selected date
-                ...tasksDueOnSelectedDate.map((taskViewModel) => ListTile(
-                      title: Text(taskViewModel.title ?? 'No Title'),
-                      subtitle: Text(
-                          'Category: ${taskViewModel.category ?? 'No Category'}'),
-                      // Display more task details here if needed
-                    )),
+                // ...tasksDueOnSelectedDate.map((taskViewModel) => ListTile(
+                //       title: Text(taskViewModel.title ?? 'No Title'),
+                //       subtitle: Text(
+                //           'Category: ${taskViewModel.category ?? 'No Category'}'),
+                //     )),
                 SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -66,21 +77,15 @@ class _MyAppBarState extends State<MyAppBar> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Color.fromRGBO(102, 136, 255, 0.83),
       elevation: 4.0,
 
-      //title: Text('Snap, The Productivity App'),
-      // leading: IconButton(
-      //   onPressed: (){},
-      //   icon: Image.asset("./SnapIcon.png")
-      // ),
-
       leading: Navigator.canPop(context)
-          ? null // If can pop, let Flutter handle the back button
-
+          ? null 
           : InkWell(
               onTap: () {},
               child: Image(
@@ -102,7 +107,7 @@ class _MyAppBarState extends State<MyAppBar> {
             _showPopup(
                 context,
                 DateTime
-                    .now()); // Adjust DateTime.now() to the date you want to filter by
+                    .now());
           },
           icon: Icon(Icons.assignment, size: 40.0),
           color: Colors.white,

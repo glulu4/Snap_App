@@ -8,7 +8,7 @@ import '../widgets/event_input_widget.dart';
 class CalendarView extends StatelessWidget {
   final bool isEditMode; // to determine if it's edit mode
   final Event?
-      initialEvent; // the task to be edited, if in edit mode
+      initialEvent; // the event to be edited, if in edit mode
 
   CalendarView({this.isEditMode = false, this.initialEvent});
 
@@ -19,12 +19,10 @@ class CalendarView extends StatelessWidget {
       body: Row(
           children: [
             Container(
-              // height: MediaQuery.of(context).size.height * 0.8,
               width: MediaQuery.of(context).size.width * 0.5,
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.03,
                   vertical: MediaQuery.of(context).size.height * 0.03),
-              // EdgeInsets.only(bottom: 50),
               child: Calendar(),
             ),
             Container(

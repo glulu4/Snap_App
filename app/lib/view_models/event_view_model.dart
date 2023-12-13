@@ -40,8 +40,4 @@ class EventViewModel {
   int get id {
     return event.id;
   }
-
-  // int? get taskId {
-  //   return event.taskId;
-  // }
 }

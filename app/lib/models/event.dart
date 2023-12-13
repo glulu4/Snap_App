@@ -7,7 +7,6 @@ class Event {
   String category;
   bool isCompleted;
   bool isTask;
-  // int? taskId;
   
 
   Event({
@@ -19,7 +18,6 @@ class Event {
     required this.category,
     required this.isCompleted,
     required this.isTask,
-    // required this.taskId,
   });
 
   Map<String, dynamic> toJson() => {
@@ -31,7 +29,6 @@ class Event {
         'dueDate': dueDate.toIso8601String(),
         'isCompleted': isCompleted,
         'isTask': isTask,
-        // 'taskId': taskId,
       };
 
  factory Event.fromJson(Map<String, dynamic> json) { 
@@ -44,7 +41,6 @@ class Event {
       category: json["category"],
       isCompleted: json["isCompleted"],
       isTask: json["isTask"],
-      // taskId: json["taskId"],
     );
   }
 
@@ -58,7 +54,6 @@ class Event {
     String? category,
     bool? isCompleted,
     bool? isTask,
-    int? taskId,
   }) {
     return Event(
       id: id ?? this.id,
@@ -69,7 +64,6 @@ class Event {
       category: category ?? this.category,
       isCompleted: isCompleted ?? this.isCompleted,
       isTask: isTask ?? this.isTask,
-      // taskId: taskId ?? this.taskId,
     );
   }
 }

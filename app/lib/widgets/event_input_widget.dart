@@ -31,7 +31,6 @@ class _EventInputState extends State<EventInput> {
   void initState() {
     super.initState();
     if (widget.isEditMode && widget.initialEvent != null) {
-      // Initialize fields with the existing task data
       titleController.text = widget.initialEvent!.title;
       detailsController.text = widget.initialEvent!.details;
       locationController.text = widget.initialEvent!.location;
@@ -61,8 +60,6 @@ class _EventInputState extends State<EventInput> {
     final combinedViewModel = Provider.of<CombinedViewModel>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       if (widget.isEditMode) {
-        // Handle task edit logic here
-        // create a new Task instance with updated values
         Event updatedEvent = widget.initialEvent!.copyWith(
           title: titleController.text,
           dueDate: combinedViewModel.selectedDay!,
@@ -86,10 +83,10 @@ class _EventInputState extends State<EventInput> {
               backgroundColor: Colors.red,
             ),
           );
-          return; // Exit the function as we can't proceed without a selected day
+          return;
         }
         final event = Event(
-          id: DateTime.now().millisecondsSinceEpoch, // Simple ID generation
+          id: DateTime.now().millisecondsSinceEpoch, 
           title: titleController.text,
           dueDate: combinedViewModel.selectedDay!,
           category: categoryController.text,
@@ -97,7 +94,6 @@ class _EventInputState extends State<EventInput> {
           location: locationController.text,
           isCompleted: false,
           isTask: false,
-          // taskId: null
         );
 
         eventListViewModel.addEvent(event);
