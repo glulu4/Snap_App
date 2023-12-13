@@ -18,7 +18,7 @@ class CombinedViewModel extends ChangeNotifier {
   DateTime? rangeStart;
   DateTime? rangeEnd;
 
-  // Method to update the view models
+  // update the view models
   void updateViewModels(
       TaskListViewModel taskListVM, EventListViewModel eventListVM) {
     _taskListViewModel = taskListVM;
