@@ -49,21 +49,15 @@ class _MyAppBarState extends State<MyAppBar> {
                 SizedBox(height: 16),
                 // Display the numbered tasks due on the selected date
                 ...tasksDueOnSelectedDate.asMap().entries.map((entry) {
-                  int taskNumber = entry.key + 1; // Task number (starting from 1)
+                  int taskNumber = entry.key + 1; 
                   TaskViewModel taskViewModel = entry.value;
 
                   return ListTile(
-                    leading: Text('$taskNumber'), // Display the task number
+                    leading: Text('$taskNumber'), 
                     title: Text(taskViewModel.task.title ?? 'No Title'),
                     subtitle: Text('Category: ${taskViewModel.category ?? 'No Category'}'),
                   );
                 }).toList(),
-                // Display the tasks due on the selected date
-                // ...tasksDueOnSelectedDate.map((taskViewModel) => ListTile(
-                //       title: Text(taskViewModel.title ?? 'No Title'),
-                //       subtitle: Text(
-                //           'Category: ${taskViewModel.category ?? 'No Category'}'),
-                //     )),
                 SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),

@@ -12,7 +12,7 @@ class CombinedViewModel extends ChangeNotifier {
   ValueNotifier<List<dynamic>> selectedItems = ValueNotifier([]);
   CalendarFormat calendarFormat = CalendarFormat.month;
   RangeSelectionMode rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
+      .toggledOff; 
   DateTime focusedDay = DateTime.now();
   DateTime? selectedDay;
   DateTime? rangeStart;
@@ -26,7 +26,7 @@ class CombinedViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Call this method to update the items for a selected day
+  // update the items for a selected day
   void updateSelectedDay(DateTime day) {
     selectedDay = day;
     selectedItems.value = getItemsForDay(day);
