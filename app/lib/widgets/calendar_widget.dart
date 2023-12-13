@@ -65,6 +65,7 @@ class _CalendarState extends State<Calendar> {
               child: Text('Edit'),
               onPressed: () {
                 Navigator.of(context).pop(); 
+                 navigateToEditEvent(context, event);
               },
             ),
             TextButton(
