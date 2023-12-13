@@ -16,6 +16,27 @@ Snap is a cutting-edge productivity application designed to streamline your task
 
 Snap follows the MVVM (Model-View-ViewModel) architecture pattern, ensuring that UI logic is decoupled from the business logic, leading to a scalable and maintainable codebase.
 
+## Prerequisites
+
+Before you begin, ensure that you have the following installed on your machine:
+
+- [Flutter](https://flutter.dev/docs/get-started/install)
+- [Dart](https://dart.dev/get-dart)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+And an IDE that supports Flutter like VSCode or IntelliJ IDEA
+
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/your-flutter-website.git
+2. Change into the project directory, make sure you are in the "app" directory
+   cd .../app
+3. Install dependecies:
+   flutter pub get
+5. Run the website locally:
+   flutter run
+
 ## Authors
 
 - Gabby Lulu [@glulu4](https://github.com/glulu4)
